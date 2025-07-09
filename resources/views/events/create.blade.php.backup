@@ -1,0 +1,162 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            ➕ Buat Event Baru
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-semibold mb-6 text-gray-800">
+                        📅 Tambah Event Baru
+                    </h3>
+
+                    <!-- Form -->
+                    <form action="{{ route('events.store') }}" method="POST" class="space-y-6">
+                        @csrf
+                        
+                        <!-- Title -->
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                                📝 Judul Event
+                            </label>
+                            <input 
+                                type="text" 
+                                id="title" 
+                                name="title" 
+                                value="{{ old('title') }}"
+                                placeholder="Masukkan judul event..."
+                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            >
+                            @error('title')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Event Type -->
+                        <div>
+                            <label for="type" class="block text-sm font-medium text-gray-700 mb-2">
+                                🏷️ Jenis Event
+                            </label>
+                            <select 
+                                id="type" 
+                                name="type"
+                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            >
+                                <option value="">Pilih jenis event...</option>
+                                <option value="event" {{ old('type') === 'event' ? 'selected' : '' }}>🎉 Event Umum</option>
+                                <option value="cycle" {{ old('type') === 'cycle' ? 'selected' : '' }}>🔄 Cycle Tracking</option>
+                                <option value="birthday" {{ old('type') === 'birthday' ? 'selected' : '' }}>🎂 Birthday</option>
+                            </select>
+                            @error('type')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- ✅ TAMBAHKAN INI - Spotify Track Field -->
+                        <div class="form-group">
+                            <label for="spotify_track_id" class="form-label">
+                                <span class="icon">🎵</span>
+                                Background Music (Optional)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="spotify_track_id" 
+                                name="spotify_track_id" 
+                                value="{{ old('spotify_track_id') }}"
+                                class="form-input"
+                                placeholder="Spotify track ID (optional)"
+                            >
+                            @error('spotify_track_id')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Start Date -->
+                        <div>
+                            <label for="start_date" class="block text-sm font-medium text-gray-700 mb-2">
+                                📅 Tanggal & Waktu Mulai
+                            </label>
+                            <input 
+                                type="datetime-local" 
+                                id="start_date" 
+                                name="start_date" 
+                                value="{{ old('start_date') }}"
+                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            >
+                            @error('start_date')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- End Date -->
+                        <div>
+                            <label for="end_date" class="block text-sm font-medium text-gray-700 mb-2">
+                                📅 Tanggal & Waktu Selesai
+                            </label>
+                            <input 
+                                type="datetime-local" 
+                                id="end_date" 
+                                name="end_date" 
+                                value="{{ old('end_date') }}"
+                                class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                required
+                            >
+                            @error('end_date')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Share With -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                👥 Bagikan dengan
+                            </label>
+                            <div class="space-y-2">
+                                @foreach($allUsers as $user)
+                                    <label class="flex items-center">
+                                        <input 
+                                            type="checkbox" 
+                                            name="shared_with[]" 
+                                            value="{{ $user->id }}"
+                                            {{ auth()->id() === $user->id ? 'checked disabled' : '' }}
+                                            {{ in_array($user->id, old('shared_with', [])) ? 'checked' : '' }}
+                                            class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                                        >
+                                        <span class="ml-2 text-sm text-gray-700">
+                                            {{ $user->name }} 
+                                            @if(auth()->id() === $user->id)
+                                                <span class="text-gray-500">(Anda)</span>
+                                            @endif
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                            @error('shared_with')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="flex items-center justify-between pt-4">
+                            <a href="{{ route('events.index') }}" 
+                               class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded transition-colors">
+                                ← Batal
+                            </a>
+                            
+                            <button type="submit" 
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition-colors">
+                                💾 Simpan Event
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>

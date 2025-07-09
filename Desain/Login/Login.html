@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Our Memories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS Responsif dengan Tata Letak Asli --- */
+        
+        /* Reset dan Pengaturan Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Mencegah scroll */
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .Login {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: #181A26;
+        }
+
+        /* Background dan Overlay */
+        .background-image {
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            position: absolute;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .overlay {
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            position: absolute;
+            background: rgba(0, 0, 0, 0.20);
+            backdrop-filter: blur(1px);
+            z-index: 2;
+        }
+
+        /* Header Styles */
+        .header {
+            width: 100vw;
+            height: 7.13vh; /* 154px / 2160px */
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #181A26;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            padding-left: 2.58vw; /* 99px / 3840px */
+        }
+
+        .logo-square {
+            width: 1.46vw; /* 56px / 3840px */
+            height: 2.5vh; /* 54px / 2160px */
+            background: #8CE0FF;
+            flex-shrink: 0; /* Mencegah logo mengecil */
+        }
+
+        .brand-name {
+            color: #D3D3D9;
+            font-size: 1.85vh; /* 40px / 2160px */
+            margin-left: 0.86vw; /* 33px / 3840px */
+        }
+
+        /* Main Content Styles */
+        .login-container {
+            width: 35.75vw; /* 1373px / 3840px */
+            height: 51.7vh; /* 1117px / 2160px */
+            left: 32.1vw; /* 1233px / 3840px */
+            top: 16.2vh; /* 350px / 2160px */
+            position: absolute;
+            background: #181A26;
+            border-radius: 2.6vh; /* 56px / 2160px */
+            z-index: 5;
+            padding: 4.6vh 3.2vw; /* 100px / 2160px, 123px / 3840px */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-title {
+            text-align: center;
+            color: #D4D4D4;
+            font-size: 3.24vh; /* 70px / 2160px */
+            font-family: 'DM Serif Text', serif;
+            margin-bottom: 3.7vh; /* 80px / 2160px */
+        }
+
+        .input-container {
+            width: 28.17vw; /* 1082px / 3840px */
+            height: 14.9vh; /* 322px / 2160px */
+            background: #343646;
+            border-radius: 2.2vh; /* 48px / 2160px */
+            padding: 2.5vh 1.4vw; /* 55px / 2160px, 55px / 3840px */
+            margin-bottom: 1.4vh; /* 30px / 2160px */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .input-label {
+            color: #D4D4D4;
+            font-size: 1.8vh; /* 39px / 2160px */
+        }
+        
+        .input-divider {
+            width: 25.8vw; /* 991px / 3840px */
+            height: 0;
+            border: 0.14vh solid #181A26; /* 3px / 2160px */
+        }
+
+        .forgot-password {
+            width: 28.17vw; /* 1082px */
+            color: #8CE0FF;
+            font-size: 1.8vh; /* 39px */
+            text-align: right;
+            margin-bottom: 1.85vh; /* 40px */
+            text-decoration: none;
+        }
+
+        .login-button {
+            width: 28.17vw; /* 1082px */
+            height: 5.55vh; /* 120px */
+            background: #8CE0FF;
+            border-radius: 4.2vh; /* 91px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #181A26;
+            font-size: 1.8vh; /* 39px */
+            cursor: pointer;
+            border: none;
+            margin-bottom: 1.85vh; /* 40px */
+        }
+
+        .signup-prompt {
+            text-align: center;
+            margin-top: auto; /* Mendorong ke bawah */
+            color: #D4D4D4;
+            font-size: 1.8vh; /* 39px */
+        }
+
+        .signup-link {
+            color: #8CE0FF;
+            text-decoration: none;
+        }
+
+        /* Footer Styles */
+        .footer {
+            width: 100vw;
+            height: 24.8vh;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: #181A26;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="Login">
+        <!-- Background Image -->
+        <img class="background-image" src="1.png" alt="Background">
+        <div class="overlay"></div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-square"></div>
+            <div class="brand-name">Our Memories</div>
+        </header>
+
+        <!-- Login Form -->
+        <div class="login-container">
+            <h1 class="login-title">Log in to your Account</h1>
+            
+            <div class="input-container">
+                <div class="input-label">Email Address</div>
+                <div class="input-divider"></div>
+                <div class="input-label">Password</div>
+            </div>
+
+            <a href="#" class="forgot-password">Forgot your password?</a>
+            
+            <button class="login-button">Log in</button>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Selamat Datang</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS Responsif dengan Tata Letak Asli --- */
+
+        /* Reset dan Pengaturan Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Mencegah scroll yang tidak perlu */
+        }
+
+        /* Kontainer Utama Halaman */
+        .HalamanSelamatDatang {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: #181A26; /* Warna dasar jika gambar tidak ada */
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Background dan Overlay */
+        .background-image {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover; /* Memastikan gambar menutupi layar */
+            z-index: 1;
+        }
+
+        .background-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.20);
+            backdrop-filter: blur(1px);
+            z-index: 2;
+        }
+
+        /* Header Elements */
+        .header-container {
+            width: 100%;
+            height: 7.1vh; /* 154px / 2160px */
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #181A26;
+            z-index: 10;
+        }
+
+        .logo {
+            width: 1.45vw; /* 56px / 3840px */
+            height: 2.5vh; /* 54px / 2160px */
+            left: 2.5vw; /* 99px / 3840px */
+            top: 2.3vh; /* 50px / 2160px */
+            position: absolute;
+            background: #8CE0FF;
+        }
+
+        .brand-name {
+            left: 5vw; /* 188px / 3840px */
+            top: 2.2vh; /* 47px / 2160px */
+            position: absolute;
+            color: #D3D3D9;
+            font-size: 1.85vh; /* 40px / 2160px */
+        }
+
+        /* Main Content */
+        .main-content-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60vw;
+            z-index: 5;
+            text-align: center;
+        }
+
+        .main-title {
+            color: white;
+            font-size: 4.6vh; /* 100px / 2160px */
+            font-family: 'DM Serif Text', serif;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 3vh;
+        }
+
+        .description {
+            color: white;
+            font-size: 2.3vh; /* 50px / 2160px */
+            font-weight: 400;
+            max-width: 80%;
+            margin: 0 auto 4vh auto;
+        }
+        
+        .main-login-btn {
+            display: inline-block;
+            background: #8CE0FF;
+            color: #181A26;
+            font-size: 1.85vh; /* 40px / 2160px */
+            font-weight: 500;
+            padding: 1.5vh 3vw;
+            border-radius: 5vh;
+            text-decoration: none;
+        }
+
+        /* Polaroid Styles */
+        .polaroid {
+            position: absolute;
+            width: 8vw; /* Disesuaikan agar tidak terlalu besar */
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            padding: 0.5vw;
+            padding-bottom: 1.5vw;
+            z-index: 3;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1.1; /* Menjaga rasio gambar polaroid */
+            object-fit: cover;
+            display: block;
+        }
+
+        .polaroid-1 { left: 14vw; top: 12vh; transform: rotate(14deg); }
+        .polaroid-2 { left: 17vw; top: 50vh; transform: rotate(-16deg); }
+        .polaroid-3 { right: 14vw; top: 12vh; transform: rotate(-14deg); }
+        .polaroid-4 { right: 17vw; top: 50vh; transform: rotate(16deg); }
+
+        /* Footer */
+        .footer-container {
+            width: 100%;
+            height: 24.8vh;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: #181A26;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-text {
+            text-align: center;
+            color: #D3D3D9;
+            font-size: 2.3vh;
+            width: 50vw;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="HalamanSelamatDatang">
+        <!-- Background -->
+        <img data-layer="background" class="background-image" src="1.png" alt="Background">
+        <div data-layer="overlay" class="background-overlay"></div>
+
+        <!-- Header -->
+        <div class="header-container">
+            <div class="logo"></div>
+            <div class="brand-name">Our Memories</div>
+        </div>
+
+        <!-- Polaroids -->
+        <div class="polaroid polaroid-1"><img src="2.png" alt="Polaroid 1"></div>
+        <div class="polaroid polaroid-2"><img src="3.png" alt="Polaroid 2"></div>
+        <div class="polaroid polaroid-3"><img src="4.png" alt="Polaroid 3"></div>
+        <div class="polaroid polaroid-4"><img src="5.png" alt="Polaroid 4"></div>
+
+        <!-- Content -->
+        <div class="main-content-container">
+            <div class="main-title">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+            </div>
+            <div class="description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+            <a href="#" class="main-login-btn">Login</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-container">
+            <div class="footer-text">
+                footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer
+            </div>
+        </div>
+    </div>
+</body>
+</html>

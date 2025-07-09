@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Halaman Kenangan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
+  <style>
+    /* --- CSS untuk Kerangka Halaman --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #D3D3D9;
+      overflow-x: hidden;
+    }
+    
+    .PageContainer {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      background: #D3D3D9;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header Navigation */
+    .header {
+      width: 100%;
+      height: 7.13vh; /* 154px / 2160px */
+      background: #181A26;
+      display: flex;
+      align-items: center;
+      padding: 0 2.5vw;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+      margin-left: auto;
+      margin-right: 3.5vw;
+    }
+    
+    .nav-item {
+      color: #D3D3D9;
+      font-size: 1.04vw; /* 40px / 3840px */
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item:hover {
+      color: #8CE0FF;
+    }
+    
+    .logo-box {
+      width: 1.45vw; /* 56px / 3840px */
+      height: 2.5vh; /* 54px / 2160px */
+      background: #8CE0FF;
+      flex-shrink: 0;
+    }
+    
+    .logout-btn {
+      background: #8CE0FF;
+      border-radius: 4.8vh; /* 104px / 2160px */
+      padding: 1vh 1.5vw;
+      color: #181A26;
+      font-size: 1.04vw;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #6bd4ff;
+    }
+    
+    /* Main Content Area */
+    .content-area {
+      flex-grow: 1;
+      padding: 3vh 2.5vw;
+    }
+
+    /* --- CSS untuk Konten Halaman Kenangan --- */
+    .page-title {
+      color: #181A26;
+      font-size: 2.08vw; /* 80px / 3840px */
+      font-family: 'DM Serif Text', serif;
+      margin-bottom: 1vh;
+      text-align: left;
+    }
+
+    .page-subtitle {
+      color: #181A26;
+      font-size: 1.3vw; /* 50px / 3840px */
+      margin-bottom: 3vh;
+      text-align: left;
+    }
+
+    /* Our Journey Section */
+    .journey-section {
+      background: #343646;
+      border-radius: 2.3vh;
+      padding: 2.2vh 3.1vw;
+      margin-bottom: 3vh;
+      position: relative;
+    }
+
+    .carousel {
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      margin: 2vh 0;
+    }
+
+    .carousel-inner {
+      display: flex;
+      gap: 2vw;
+      padding: 1vh 0;
+    }
+
+    .carousel-item {
+      flex: 0 0 auto;
+      width: calc(33.333% - 1.33vw);
+      background: #FFFFFF;
+      border-radius: 1vh;
+      padding: 1vh;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .carousel-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 0.5vh;
+      margin-bottom: 1vh;
+    }
+
+    .carousel-date {
+      color: #181A26;
+      font-size: 1vw;
+      font-family: 'DM Serif Text', serif;
+      margin: 1vh 0;
+    }
+
+    .carousel-description {
+      color: #181A26;
+      font-size: 0.8vw;
+      margin-top: 0.5vh;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: rgba(24, 26, 38, 0.5);
+      border: none;
+      border-radius: 50%;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: background-color 0.3s ease;
+    }
+
+    .carousel-nav:hover {
+      background: rgba(24, 26, 38, 0.8);
+    }
+
+    .carousel-prev {
+      left: 1vw;
+    }
+
+    .carousel-next {
+      right: 1vw;
+    }
+
+    .section-title {
+      color: #D3D3D9;
+      font-size: 1.56vw; /* 60px / 3840px */
+      font-family: 'DM Serif Text', serif;
+      margin-bottom: 2vh;
+    }
+
+    .journey-image {
+      width: 100%;
+      height: auto;
+      max-width: 46vw; /* 1769px / 3840px */
+      display: block;
+      margin: 0 auto;
+      border-radius: 1vh;
+    }
+
+    /* Add New Memories Section */
+    .add-memory-section {
+      background: #343646;
+      border-radius: 2.3vh; /* 50px / 2160px */
+      padding: 2.2vh 3.1vw;
+      margin-top: 5vh;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2vh 2vw;
+      margin-top: 2vh;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      color: #D3D3D9;
+      font-size: 1.04vw; /* 40px / 3840px */
+      font-weight: 500;
+      margin-bottom: 1vh;
+    }
+
+    .form-input, .form-textarea, .form-upload {
+      background: transparent;
+      border-radius: 1.25vh; /* 27px / 2160px */
+      border: 0.09vh solid #D3D3D9; /* 2px */
+      padding: 1.5vh 1vw;
+      color: #D3D3D9;
+      font-size: 1.04vw;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: #8F8C8C;
+    }
+
+    .form-textarea {
+      height: 18.5vh; /* 400px / 2160px */
+      resize: vertical;
+    }
+    
+    .form-upload {
+      height: 20vh; /* 434px / 2160px */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-style: dashed;
+    }
+
+    .add-memory-btn-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 3vh;
+    }
+
+    .add-memory-btn {
+      background: #D3D3D9;
+      border-radius: 4.2vh; /* 91px / 2160px */
+      padding: 1.5vh 5vw;
+      color: #181A26;
+      font-size: 1.01vw; /* 39px / 3840px */
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-memory-btn:hover {
+      background: #bfbfbf;
+    }
+
+    /* Footer */
+    .footer {
+      width: 100%;
+      height: 24.8vh;
+      background: #181A26;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 5vh;
+    }
+    
+    .footer-text {
+      text-align: center;
+      color: #D4D4D4;
+      font-size: 1.3vw;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1440px) {
+      .nav-item {
+        font-size: 16px;
+      }
+
+      .logo-box {
+        width: 40px;
+        height: 40px;
+      }
+
+      .page-title {
+        font-size: 42px;
+      }
+
+      .page-subtitle {
+        font-size: 24px;
+      }
+
+      .section-title {
+        font-size: 32px;
+      }
+
+      .memory-date {
+        font-size: 20px;
+      }
+
+      .memory-description {
+        font-size: 16px;
+      }
+
+      .form-label {
+        font-size: 16px;
+      }
+
+      .form-input, .form-textarea, .form-upload {
+        font-size: 16px;
+      }
+
+      .journey-image {
+        max-width: 100%;
+      }
+
+      .memory-image-placeholder {
+        width: 100%;
+        max-width: 600px;
+        height: 400px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        height: 60px;
+        padding: 0 20px;
+      }
+
+      .nav-right {
+        gap: 15px;
+      }
+
+      .nav-item {
+        font-size: 14px;
+      }
+
+      .logout-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+
+      .content-area {
+        padding: 20px;
+      }
+
+      .page-title {
+        font-size: 32px;
+      }
+
+      .page-subtitle {
+        font-size: 18px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .journey-section,
+      .add-memory-section {
+        padding: 20px;
+      }
+
+      .memory-image-placeholder {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="PageContainer">
+    <!-- Header Navigation -->
+    <header class="header">
+      <div class="nav-left">
+        <div class="logo-box"></div>
+        <a href="#" class="nav-item">Our Memories</a>
+      </div>
+      <div class="nav-right">
+        <a href="#" class="nav-item">Gallery</a>
+        <a href="#" class="nav-item">Countdown</a>
+        <a href="#" class="nav-item">Music</a>
+        <a href="#" class="nav-item">Calendar</a>
+        <a href="#" class="nav-item">Profile</a>
+        <button class="logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <!-- Area Konten Utama -->
+    <main class="content-area">
+      <h1 class="page-title">Timeline of Memories</h1>
+      <p class="page-subtitle">Click here — let the music take you where words once lived.</p>
+
+      <!-- Our Journey Section -->
+      <section class="journey-section">
+        <h2 class="section-title">Our Journey</h2>
+        <div class="carousel">
+          <button class="carousel-nav carousel-prev">‹</button>
+          <div class="carousel-inner">
+            <div class="carousel-item">
+              <img src="https://placehold.co/400x300/cccccc/969696?text=Memory+1" alt="Memory 1" class="carousel-image">
+              <p class="carousel-date">12-03-2020</p>
+              <p class="carousel-description">walking around with my favorite person</p>
+            </div>
+            <div class="carousel-item">
+              <img src="https://placehold.co/400x300/cccccc/969696?text=Memory+2" alt="Memory 2" class="carousel-image">
+              <p class="carousel-date">12-03-2020</p>
+              <p class="carousel-description">walking around with my favorite person As the days fall away, we count down to the moment the stars once aligned — when Hubble captured the sky that honored your birth...</p>
+            </div>
+            <div class="carousel-item">
+              <img src="https://placehold.co/400x300/cccccc/969696?text=Memory+3" alt="Memory 3" class="carousel-image">
+              <p class="carousel-date">12-03-2020</p>
+              <p class="carousel-description">Kinda missing u around</p>
+            </div>
+          </div>
+          <button class="carousel-nav carousel-next">›</button>
+        </div>
+      </section>
+
+      
+      <!-- Add New Memories Section -->
+      <section class="add-memory-section">
+        <h2 class="section-title">Add New Memories</h2>
+        <form>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="date" class="form-label">Date</label>
+              <input type="text" id="date" class="form-input" placeholder="DD/MM/YYYY">
+            </div>
+            <div class="form-group">
+              <label for="mood" class="form-label">Mood</label>
+              <input type="text" id="mood" class="form-input" placeholder="Select Mood">
+            </div>
+            <div class="form-group full-width">
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" class="form-textarea" placeholder="Write your stories here"></textarea>
+            </div>
+            <div class="form-group full-width">
+              <label for="upload" class="form-label">Upload Image</label>
+              <label for="file-upload" class="form-upload">Click to upload</label>
+              <input type="file" id="file-upload" style="display:none;">
+            </div>
+          </div>
+          <div class="add-memory-btn-container">
+            <button type="submit" class="add-memory-btn">Add Memories</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer</p>
+    </footer>
+  </div>
+
+  <script>
+    // Menambahkan JavaScript untuk fungsi carousel
+    document.addEventListener('DOMContentLoaded', function() {
+      const carousel = document.querySelector('.carousel-inner');
+      const prevBtn = document.querySelector('.carousel-prev');
+      const nextBtn = document.querySelector('.carousel-next');
+      let position = 0;
+      const itemWidth = document.querySelector('.carousel-item').offsetWidth + 20; // Including gap
+
+      prevBtn.addEventListener('click', () => {
+        position += itemWidth;
+        if (position > 0) position = -(itemWidth * 2);
+        carousel.style.transform = `translateX(${position}px)`;
+      });
+
+      nextBtn.addEventListener('click', () => {
+        position -= itemWidth;
+        if (position < -(itemWidth * 2)) position = 0;
+        carousel.style.transform = `translateX(${position}px)`;
+      });
+    });
+  </script>
+</body>
+</html>

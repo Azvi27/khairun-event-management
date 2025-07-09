@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
+
+  <style>
+    /* 1. Reset ukuran & pewaris font agar konsisten   */
+    *, *::before, *::after { 
+        box-sizing: border-box; 
+        margin: 0; 
+        padding: 0; 
+    }
+
+    /* 2. Palet warna yang dipakai berulang */
+    :root {
+      --grey-light: #D4D4D4;
+      --grey-dark : #181A26;
+      --grey-mid  : #343646;
+      --blue-accent: #8CE0FF;
+    }
+
+    /* 3. Struktur halaman dasar */
+    body {
+      font-family: "Poppins", sans-serif;
+      color: var(--grey-light);
+      background: var(--grey-light);
+      overflow: hidden;
+    }
+
+    /* 4. Kanvas utama */
+    .canvas {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 5. Panel samping kiri */
+    .sidebar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 28.95vw; /* 1112px / 3840px */
+      height: 100%;
+      background: var(--grey-dark);
+    }
+
+    /* 6. Konten utama */
+    .content-box {
+      position: absolute;
+      top: 40.83vh; /* 882px / 2160px */
+      left: 32.05vw; /* 1231px / 3840px */
+      width: 65vw; /* 2497px / 3840px */
+      height: 25.4vh; /* 549px / 2160px */
+      background: var(--grey-mid);
+      border-radius: 1.62vh; /* 35px / 2160px */
+    }
+
+    /* 7. Lingkaran dekoratif */
+    .circle {
+      position: absolute;
+      background: var(--blue-accent);
+      border-radius: 50%;
+    }
+    .circle--sm { width: 3.82vw; height: 6.8vh; } /* 147px */
+    .circle--md { width: 4.08vw; height: 7.26vh; } /* 157px */
+    .circle--lg { width: 9.97vw; height: 17.73vh; } /* 383px */
+
+    /* 8. Gambar profil & gambar pendukung */
+    .img-abs {
+      position: absolute;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    /* 9. Teks judul & label */
+    .heading {
+      font-family: "DM Serif Text", serif;
+      color: var(--grey-light);
+      position: absolute;
+    }
+    .heading--large  { font-size: 4.62vh; color: var(--grey-dark); } /* 100px */
+    .heading--medium { font-size: 2.77vh; } /* 60px */
+    .heading--small  { font-size: 2.54vh; font-weight: 500; } /* 55px */
+
+    .subtext {
+      font-size: 1.85vh; /* 40px */
+      font-weight: 400;
+    }
+
+    /* 10. Tombol */
+    .btn {
+      position: absolute;
+      width: 8.15vw; /* 313px / 3840px */
+      height: 3.8vh; /* 82px / 2160px */
+      background: var(--grey-light);
+      border-radius: 4.2vh; /* 91px / 2160px */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8vh; /* 39px / 2160px */
+      color: var(--grey-dark);
+      cursor: pointer;
+    }
+
+    /* 11. Ikon   */
+    .icon {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      color: var(--grey-light);
+    }
+    .icon svg { width: 80%; height: 80%; }
+  </style>
+</head>
+
+<body>
+  <div class="canvas">
+
+    <!-- PANEL SAMPING -->
+    <aside class="sidebar">
+
+      <!-- Profil ringkas -->
+      <div class="circle circle--md" style="top:3.56vh; left:2.05vw;"></div>
+      <img class="img-abs" src="https://placehold.co/208x208" alt="Foto Profil"
+           style="width:5.42vw; height:9.63vh; top:3.0vh; left:1.25vw;" />
+
+      <h1 class="heading heading--medium" style="top:5.46vh; left:7.5vw;">
+        M. Khalis Farhan Azvi
+      </h1>
+
+      <!-- Navigasi -->
+      <nav>
+        <div class="icon" style="width:2.34vw; height:4.16vh; top:13.75vh; left:2.94vw;">
+          <!-- SVG home -->
+        </div>
+        <h2 class="heading heading--small" style="top:14.07vh; left:7.1vw;">
+          Dashboard
+        </h2>
+
+        <div class="icon" style="width:2.08vw; height:3.65vh; top:21.38vh; left:3.07vw;">
+          <!-- SVG gallery -->
+        </div>
+        <h2 class="heading heading--small" style="top:21.3vh; left:7.1vw;">
+          Gallery
+        </h2>
+
+        <div class="icon" style="width:2.42vw; height:4.3vh; top:28.5vh; left:2.89vw;">
+          <!-- SVG countdown -->
+        </div>
+        <h2 class="heading heading--small" style="top:28.75vh; left:7.1vw;">
+          Countdown
+        </h2>
+
+        <div class="icon" style="width:2.29vw; height:4.07vh; top:36.38vh; left:2.96vw;">
+          <!-- SVG music -->
+        </div>
+        <h2 class="heading heading--small" style="top:36.2vh; left:7.1vw;">
+          Music
+        </h2>
+
+        <div class="icon" style="width:2.29vw; height:4.12vh; top:43.9vh; left:2.96vw;">
+          <!-- SVG calendar -->
+        </div>
+        <h2 class="heading heading--small" style="top:44.2vh; left:7.1vw;">
+          Calendar
+        </h2>
+      </nav>
+    </aside>
+
+    <!-- KONTEN UTAMA -->
+    <main>
+        <h1 class="heading heading--large" style="top:4.44vh; left:32.05vw;">Profile</h1>
+
+        <div class="circle circle--lg" style="top:16.01vh; left:59.58vw;"></div>
+        <img class="img-abs" src="https://placehold.co/508x508" alt="Picture Large"
+           style="width:13.22vw; height:23.5vh; top:14.9vh; left:57.8vw;"/>
+
+        <div class="content-box">
+            <!-- Judul section -->
+            <h2 class="heading heading--medium" style="position:relative; top:1.15vh; left:1.43vw;">
+                Pengaturan Akun
+            </h2>
+
+            <!-- Lingkaran dekorasi dalam konten -->
+            <div class="circle circle--sm" style="position:absolute; top:6.75vh; left:1.43vw;"></div>
+            <img class="img-abs" src="https://placehold.co/195x195" alt="Picture Small"
+                style="width:5.07vw; height:9.02vh; top:6.25vh; left:0.65vw;"/>
+            
+            <!-- Item pengaturan -->
+            <section style="position:absolute; top:6.62vh; left:6.51vw;">
+                <h3 class="heading" style="position:relative; font-size:2.31vh; font-weight:600;">Profile Picture</h3>
+                <p class="subtext">Change your profile picture</p>
+            </section>
+
+            <section style="position:absolute; top:15.74vh; left:6.51vw;">
+                <h3 class="heading" style="position:relative; font-size:2.31vh; font-weight:600;">Password</h3>
+                <p class="subtext">Change your password</p>
+            </section>
+
+            <!-- Tombol -->
+            <div class="btn" style="top:8.19vh; left:55.13vw;">Change</div>
+            <div class="btn" style="top:17.31vh; left:55.13vw;">Change</div>
+
+            <!-- Ikon kunci -->
+            <div class="icon" style="width:2.86vw; height:5.09vh; top:16.38vh; left:1.97vw;">
+                <!-- SVG password -->
+            </div>
+        </div>
+    </main>
+  </div>
+</body>
+</html>

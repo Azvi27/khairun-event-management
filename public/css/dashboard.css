@@ -1,0 +1,504 @@
+/* --- DASHBOARD SPECIFIC STYLES --- */
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    margin-bottom: 4vh;
+}
+
+.hero-title {
+    color: #181A26;
+    font-size: 2.5vw;
+    font-family: 'DM Serif Text', serif;
+    max-width: 80%;
+    margin: 0 auto 2vh;
+    line-height: 1.2;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #181A26;
+    color: #D3D3D9;
+    padding: 1vh 2vw;
+    border-radius: 2vh;
+    text-decoration: none;
+    font-size: 1vw;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.cta-button:hover {
+    background: #343646;
+    transform: translateY(-2px);
+}
+
+/* Gallery Section */
+.gallery {
+    display: flex;
+    justify-content: space-between;
+    gap: 2vw;
+    margin-top: 2vh;
+}
+
+.gallery-item {
+    flex: 1;
+    aspect-ratio: 16/9;
+    background: #995555;
+    border-radius: 1vh;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Countdown Section */
+.countdown-section {
+    background: #181A26;
+    border-radius: 2.3vh;
+    padding: 4vh 3.1vw;
+    margin-bottom: 3vh;
+    text-align: center;
+}
+
+.countdown-title {
+    color: #D3D3D9;
+    font-size: 1.8vw;
+    font-family: 'DM Serif Text', serif;
+    margin-bottom: 3vh;
+    line-height: 1.3;
+}
+
+.timer-container {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+    margin-bottom: 2vh;
+}
+
+.timer-box {
+    background: #D4D4D4;
+    border-radius: 1vh;
+    padding: 2vh 1vw;
+    font-size: 2.5vw;
+    color: #181A26;
+    font-family: 'DM Serif Text', serif;
+    min-width: 4vw;
+    text-align: center;
+    font-weight: 600;
+}
+
+.timer-labels {
+    display: flex;
+    justify-content: center;
+    gap: 3vw;
+    color: #D4D4D4;
+    font-size: 1.2vw;
+}
+
+/* Music Section */
+.music-section {
+    text-align: center;
+}
+
+.music-description {
+    color: #D3D3D9;
+    font-size: 1.2vw;
+    margin-bottom: 2vh;
+    font-style: italic;
+}
+
+.playlist {
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.song-item {
+    display: flex;
+    align-items: center;
+    background: #181A26;
+    border-radius: 1vh;
+    padding: 1vh;
+    margin-bottom: 1vh;
+    color: #D4D4D4;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.song-item:hover {
+    transform: translateX(5px);
+    background: #262840;
+}
+
+.song-cover {
+    width: 60px;
+    height: 60px;
+    border-radius: 0.5vh;
+    margin-right: 1vw;
+    background: #343646;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.song-info {
+    text-align: left;
+    flex: 1;
+}
+
+.song-title {
+    font-family: 'DM Serif Text', serif;
+    font-size: 1.2vw;
+    margin-bottom: 0.3vh;
+    color: #D3D3D9;
+}
+
+.song-artist {
+    font-size: 0.9vw;
+    color: #8F8C8C;
+}
+
+/* Timeline Memory Items */
+.memory-timeline {
+    display: flex;
+    overflow-x: auto;
+    gap: 2vw;
+    padding: 2vh 0;
+    margin-bottom: 3vh;
+}
+
+.memory-timeline::-webkit-scrollbar {
+    height: 8px;
+}
+
+.memory-timeline::-webkit-scrollbar-track {
+    background: #343646;
+    border-radius: 10px;
+}
+
+.memory-timeline::-webkit-scrollbar-thumb {
+    background: #8CE0FF;
+    border-radius: 10px;
+}
+
+.memory-card {
+    min-width: 300px;
+    background: rgba(52, 54, 70, 0.8);
+    border-radius: 1.5vh;
+    padding: 1.5vh;
+    border: 1px solid rgba(140, 224, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.memory-card:hover {
+    transform: translateY(-5px);
+    border-color: #8CE0FF;
+    box-shadow: 0 10px 25px rgba(140, 224, 255, 0.1);
+}
+
+.memory-date {
+    color: #8CE0FF;
+    font-size: 0.9vw;
+    font-family: 'DM Serif Text', serif;
+    margin-bottom: 1vh;
+    font-weight: 600;
+}
+
+.memory-description {
+    color: #D3D3D9;
+    font-size: 0.8vw;
+    line-height: 1.4;
+    margin-bottom: 1vh;
+}
+
+.memory-image-placeholder {
+    width: 100%;
+    height: 120px;
+    background: #181A26;
+    border-radius: 0.8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8CE0FF;
+    font-size: 14px;
+}
+
+/* Add Memory Button */
+.add-memory-btn {
+    background: linear-gradient(135deg, #8CE0FF 0%, #6bd4ff 100%);
+    color: #181A26;
+    padding: 1vh 2vw;
+    border-radius: 2vh;
+    text-decoration: none;
+    font-size: 1vw;
+    font-weight: 600;
+    display: inline-block;
+    transition: all 0.3s ease;
+    margin-bottom: 2vh;
+}
+
+.add-memory-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(140, 224, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1440px) {
+    .hero-title {
+        font-size: 36px;
+    }
+    
+    .countdown-title {
+        font-size: 28px;
+    }
+    
+    .timer-box {
+        font-size: 32px;
+    }
+    
+    .song-title {
+        font-size: 18px;
+    }
+    
+    .song-artist {
+        font-size: 14px;
+    }
+    
+    .memory-date {
+        font-size: 14px;
+    }
+    
+    .memory-description {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 28px;
+    }
+    
+    .gallery {
+        flex-direction: column;
+    }
+    
+    .timer-container {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .timer-box {
+        font-size: 24px;
+        min-width: 60px;
+    }
+    
+    .timer-labels {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    .memory-timeline {
+        gap: 15px;
+    }
+    
+    .memory-card {
+        min-width: 250px;
+    }
+    
+    .song-title {
+        font-size: 16px;
+    }
+    
+    .song-artist {
+        font-size: 13px;
+    }
+}
+
+.timer-container {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.timer-container:hover {
+    transform: scale(1.05);
+}
+
+.surprise-info {
+    text-align: center;
+    margin-top: 15px;
+    color: #8CE0FF;
+    font-style: italic;
+    font-size: 1vw;
+}
+
+/* Memory Cards Enhanced */
+.memory-card {
+    min-width: 320px;
+    background: linear-gradient(135deg, #181A26 0%, #262840 100%);
+    border-radius: 20px;
+    padding: 0;
+    border: 2px solid rgba(140, 224, 255, 0.2);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.memory-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(140, 224, 255, 0.4);
+    box-shadow: 0 12px 30px rgba(140, 224, 255, 0.2);
+}
+
+.memory-date {
+    background: rgba(140, 224, 255, 0.1);
+    color: #8CE0FF;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(140, 224, 255, 0.2);
+}
+
+.memory-preview {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.memory-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.memory-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.memory-card:hover .memory-image {
+    transform: scale(1.05);
+}
+
+.memory-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(24, 26, 38, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.memory-card:hover .memory-image-overlay {
+    opacity: 1;
+}
+
+.memory-overlay-text {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.memory-text-preview {
+    height: 100%;
+    background: rgba(52, 54, 70, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.memory-text-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+.memory-text-content {
+    color: #D3D3D9;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-style: italic;
+    max-width: 90%;
+}
+
+.memory-description {
+    color: #D3D3D9;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    padding: 15px 20px;
+    background: rgba(52, 54, 70, 0.3);
+}
+
+.memory-actions {
+    padding: 12px 20px;
+    text-align: center;
+    background: rgba(140, 224, 255, 0.05);
+    border-top: 1px solid rgba(140, 224, 255, 0.1);
+}
+
+.memory-action-hint {
+    color: #8CE0FF;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.memory-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(52, 54, 70, 0.3);
+    border-radius: 20px;
+    border: 2px dashed rgba(140, 224, 255, 0.3);
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.empty-state-text h3 {
+    color: #8CE0FF;
+    font-family: 'DM Serif Text', serif;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.empty-state-text p {
+    color: #D3D3D9;
+    font-size: 1rem;
+    margin-bottom: 25px;
+    opacity: 0.8;
+}
+
+.empty-state-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #8CE0FF 0%, #6bd4ff 100%);
+    color: #181A26;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.empty-state-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(140, 224, 255, 0.4);
+}

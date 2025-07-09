@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Our Memories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
+  <style>
+    /* --- CSS untuk Kerangka Halaman --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #D4D4D4;
+      overflow-x: hidden;
+    }
+    
+    .PageContainer {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      background: #D4D4D4;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header Navigation */
+    .header {
+      width: 100%;
+      height: 7.13vh;
+      background: #181A26;
+      display: flex;
+      align-items: center;
+      padding: 0 2.5vw;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+      margin-left: auto;
+      margin-right: 3.5vw;
+    }
+    
+    .nav-item {
+      color: #D3D3D9;
+      font-size: 1.04vw;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item:hover {
+      color: #8CE0FF;
+    }
+    
+    .logo-box {
+      width: 1.45vw;
+      height: 2.5vh;
+      background: #8CE0FF;
+      flex-shrink: 0;
+    }
+    
+    .logout-btn {
+      background: #8CE0FF;
+      border-radius: 4.8vh;
+      padding: 1vh 1.5vw;
+      color: #181A26;
+      font-size: 1.04vw;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #6bd4ff;
+    }
+    
+    /* Main Content Area */
+    .content-area {
+      flex-grow: 1;
+      padding: 3vh 2.5vw;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 4vh;
+    }
+
+    .hero-title {
+      color: #181A26;
+      font-size: 2.5vw;
+      font-family: 'DM Serif Text', serif;
+      max-width: 80%;
+      margin: 0 auto 2vh;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: #181A26;
+      color: #D3D3D9;
+      padding: 1vh 2vw;
+      border-radius: 2vh;
+      text-decoration: none;
+      font-size: 1vw;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: #343646;
+      transform: translateY(-2px);
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: #343646;
+      border-radius: 2.3vh;
+      padding: 2.2vh 3.1vw;
+      margin-bottom: 3vh;
+      position: relative;
+    }
+
+    .section-title {
+      color: #D3D3D9;
+      font-size: 1.56vw;
+      font-family: 'DM Serif Text', serif;
+      margin-bottom: 2vh;
+      text-align: center;
+    }
+
+    /* Gallery Section */
+    .gallery {
+      display: flex;
+      justify-content: space-between;
+      gap: 2vw;
+      margin-top: 2vh;
+    }
+
+    .gallery-item {
+      flex: 1;
+      aspect-ratio: 16/9;
+      background: #995555;
+      border-radius: 1vh;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Countdown Section */
+    .countdown-section {
+      background: #181A26;
+      border-radius: 2.3vh;
+      padding: 4vh 3.1vw;
+      margin-bottom: 3vh;
+      text-align: center;
+    }
+
+    .countdown-title {
+      color: #D3D3D9;
+      font-size: 1.8vw;
+      font-family: 'DM Serif Text', serif;
+      margin-bottom: 3vh;
+    }
+
+    .timer-container {
+      display: flex;
+      justify-content: center;
+      gap: 1vw;
+      margin-bottom: 2vh;
+    }
+
+    .timer-box {
+      background: #D4D4D4;
+      border-radius: 1vh;
+      padding: 2vh 1vw;
+      font-size: 2.5vw;
+      color: #181A26;
+      font-family: 'DM Serif Text';
+      min-width: 4vw;
+      text-align: center;
+    }
+
+    .timer-labels {
+      display: flex;
+      justify-content: center;
+      gap: 3vw;
+      color: #D4D4D4;
+      font-size: 1.2vw;
+    }
+
+    /* Music Section */
+    .music-section {
+      text-align: center;
+    }
+
+    .music-description {
+      color: #D3D3D9;
+      font-size: 1.2vw;
+      margin-bottom: 2vh;
+    }
+
+    .playlist {
+      max-width: 80%;
+      margin: 0 auto;
+    }
+
+    .song-item {
+      display: flex;
+      align-items: center;
+      background: #181A26;
+      border-radius: 1vh;
+      padding: 1vh;
+      margin-bottom: 1vh;
+      color: #D4D4D4;
+      transition: transform 0.3s ease;
+    }
+
+    .song-item:hover {
+      transform: translateX(5px);
+    }
+
+    .song-cover {
+      width: 10vw;
+      height: 10vw;
+      border-radius: 0.5vh;
+      margin-right: 1vw;
+    }
+
+    .song-info {
+      text-align: left;
+    }
+
+    .song-title {
+      font-family: 'DM Serif Text';
+      font-size: 1.5vw;
+      margin-bottom: 0.5vh;
+    }
+
+    .song-artist {
+      font-size: 1vw;
+    }
+
+    /* Calendar Section */
+    .calendar-widget {
+      background: #181A26;
+      border-radius: 2vh;
+      padding: 2vh;
+      max-width: 60%;
+      margin: 2vh auto;
+    }
+
+    .calendar-month {
+      color: #D3D3D9;
+      font-size: 1.5vw;
+      font-family: 'DM Serif Text';
+      margin-bottom: 2vh;
+      text-align: center;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1vh;
+    }
+
+    .calendar-header {
+      color: #D4D4D4;
+      font-size: 1.2vw;
+      font-weight: 600;
+      padding: 1vh;
+      text-align: center;
+    }
+
+    .calendar-day {
+      color: #D4D4D4;
+      font-size: 1vw;
+      padding: 1vh;
+      text-align: center;
+    }
+
+    .calendar-note {
+      color: #D3D3D9;
+      font-size: 1.2vw;
+      text-align: center;
+      margin-top: 2vh;
+    }
+
+    /* Footer */
+    .footer {
+      width: 100%;
+      height: 24.8vh;
+      background: #181A26;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 5vh;
+    }
+    
+    .footer-text {
+      text-align: center;
+      color: #D4D4D4;
+      font-size: 1.3vw;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1440px) {
+      .nav-item {
+        font-size: 16px;
+      }
+
+      .logo-box {
+        width: 40px;
+        height: 40px;
+      }
+
+      .hero-title {
+        font-size: 42px;
+      }
+
+      .section-title {
+        font-size: 32px;
+      }
+
+      .song-title {
+        font-size: 24px;
+      }
+
+      .song-artist {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        height: 60px;
+        padding: 0 20px;
+      }
+
+      .nav-right {
+        gap: 15px;
+      }
+
+      .nav-item {
+        font-size: 14px;
+      }
+
+      .logout-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+
+      .content-area {
+        padding: 20px;
+      }
+
+      .hero-title {
+        font-size: 32px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .content-section {
+        padding: 20px;
+      }
+
+      .gallery {
+        flex-direction: column;
+      }
+
+      .timer-box {
+        font-size: 32px;
+      }
+
+      .song-title {
+        font-size: 20px;
+      }
+
+      .song-artist {
+        font-size: 16px;
+      }
+
+      .calendar-widget {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="PageContainer">
+    <!-- Header Navigation -->
+    <header class="header">
+      <div class="nav-left">
+        <div class="logo-box"></div>
+        <a href="#" class="nav-item">Our Memories</a>
+      </div>
+      <div class="nav-right">
+        <a href="#" class="nav-item">Gallery</a>
+        <a href="#" class="nav-item">Countdown</a>
+        <a href="#" class="nav-item">Music</a>
+        <a href="#" class="nav-item">Calendar</a>
+        <a href="#" class="nav-item">Profile</a>
+        <button class="logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <!-- Area Konten Utama -->
+    <main class="content-area">
+      <!-- Hero Section -->
+      <section class="hero">
+        <h1 class="hero-title">A journey told in memories — stitched together by time, and always open for the stories you choose to keep.</h1>
+        <a href="#" class="cta-button">Click here</a>
+      </section>
+
+      <!-- Gallery Section -->
+      <section class="content-section">
+        <h2 class="section-title">Our Gallery</h2>
+        <div class="gallery">
+          <div class="gallery-item">
+            <img src="https://placehold.co/1337x752" alt="Gallery 1">
+          </div>
+          <div class="gallery-item">
+            <img src="https://placehold.co/1337x752" alt="Gallery 2">
+          </div>
+          <div class="gallery-item">
+            <img src="https://placehold.co/1337x752" alt="Gallery 3">
+          </div>
+        </div>
+      </section>
+
+      <!-- Countdown Section -->
+      <section class="countdown-section">
+        <h2 class="countdown-title">As the days fall away, we count down to the moment the stars once aligned — when Hubble captured the sky that honored your birth.</h2>
+        <div class="timer-container">
+          <div class="timer-box">3</div>
+          <div class="timer-box">0</div>
+          <div class="timer-box">2</div>
+          <div class="timer-box">3</div>
+          <div class="timer-box">1</div>
+          <div class="timer-box">1</div>
+          <div class="timer-box">0</div>
+        </div>
+        <div class="timer-labels">
+          <span>Days</span>
+          <span>Hours</span>
+          <span>Minutes</span>
+          <span>Seconds</span>
+        </div>
+      </section>
+
+      <!-- Music Section -->
+      <section class="content-section">
+        <h2 class="section-title">For everything I couldn't say, I made a playlist instead.</h2>
+        <p class="music-description">Click here — let the music take you where words once lived.</p>
+        <div class="playlist">
+          <div class="song-item">
+            <img src="https://placehold.co/209x207" alt="Melukis Senja" class="song-cover">
+            <div class="song-info">
+              <div class="song-title">Melukis Senja</div>
+              <div class="song-artist">Budi Doremi</div>
+            </div>
+          </div>
+          <div class="song-item">
+            <img src="https://placehold.co/207x207" alt="Hati-Hati di Jalan" class="song-cover">
+            <div class="song-info">
+              <div class="song-title">Hati-Hati di Jalan</div>
+              <div class="song-artist">Tulus</div>
+            </div>
+          </div>
+          <div class="song-item">
+            <img src="https://placehold.co/206x206" alt="Perfect" class="song-cover">
+            <div class="song-info">
+              <div class="song-title">Perfect</div>
+              <div class="song-artist">Ed-Sheeran</div>
+            </div>
+          </div>
+          <div class="song-item">
+            <img src="https://placehold.co/206x207" alt="Right Here Waiting" class="song-cover">
+            <div class="song-info">
+              <div class="song-title">Right Here Waiting</div>
+              <div class="song-artist">Richard Marx</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Calendar Section -->
+      <section class="content-section">
+        <h2 class="section-title">For every tomorrow after this birthday, here's a space to map your moments — with purpose, with softness, with you at the center.</h2>
+        <div class="calendar-widget">
+          <h3 class="calendar-month">January 2025</h3>
+          <div class="calendar-grid">
+            <!-- Calendar Headers -->
+            <div class="calendar-header">S</div>
+            <div class="calendar-header">M</div>
+            <div class="calendar-header">T</div>
+            <div class="calendar-header">W</div>
+            <div class="calendar-header">T</div>
+            <div class="calendar-header">F</div>
+            <div class="calendar-header">S</div>
+            
+            <!-- Calendar Days -->
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5</div>
+            <div class="calendar-day">6</div>
+            <div class="calendar-day">7</div>
+            <div class="calendar-day">8</div>
+            <div class="calendar-day">9</div>
+            <div class="calendar-day">10</div>
+            <div class="calendar-day">11</div>
+            <div class="calendar-day">12</div>
+            <div class="calendar-day">13</div>
+            <div class="calendar-day">14</div>
+            <div class="calendar-day">15</div>
+            <div class="calendar-day">16</div>
+            <div class="calendar-day">17</div>
+            <div class="calendar-day">18</div>
+            <div class="calendar-day">19</div>
+            <div class="calendar-day">20</div>
+            <div class="calendar-day">21</div>
+            <div class="calendar-day">22</div>
+            <div class="calendar-day">23</div>
+            <div class="calendar-day">24</div>
+            <div class="calendar-day">25</div>
+            <div class="calendar-day">26</div>
+            <div class="calendar-day">27</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">29</div>
+            <div class="calendar-day">30</div>
+            <div class="calendar-day">31</div>
+            <div class="calendar-day"></div>
+            <div class="calendar-day"></div>
+            <div class="calendar-day"></div>
+            <div class="calendar-day"></div>
+          </div>
+        </div>
+        <p class="calendar-note">Click the calendar!</p>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer</p>
+    </footer>
+  </div>
+</body>
+</html> 

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template - Our Memories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
+  <style>
+    /* --- CSS untuk Kerangka Halaman --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #D3D3D9;
+      overflow-x: hidden;
+    }
+    
+    .PageContainer {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      background: #D3D3D9;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header Navigation */
+    .header {
+      width: 100%;
+      height: 7.13vh;
+      background: #181A26;
+      display: flex;
+      align-items: center;
+      padding: 0 2.5vw;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+      margin-left: auto;
+      margin-right: 3.5vw;
+    }
+    
+    .nav-item {
+      color: #D3D3D9;
+      font-size: 1.04vw;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item:hover {
+      color: #8CE0FF;
+    }
+    
+    .logo-box {
+      width: 1.45vw;
+      height: 2.5vh;
+      background: #8CE0FF;
+      flex-shrink: 0;
+    }
+    
+    .logout-btn {
+      background: #8CE0FF;
+      border-radius: 4.8vh;
+      padding: 1vh 1.5vw;
+      color: #181A26;
+      font-size: 1.04vw;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #6bd4ff;
+    }
+    
+    /* Main Content Area */
+    .content-area {
+      flex-grow: 1;
+      padding: 3vh 2.5vw;
+    }
+
+    /* Page Title */
+    .page-title {
+      color: #181A26;
+      font-size: 2.08vw;
+      font-family: 'DM Serif Text', serif;
+      margin-bottom: 1vh;
+      text-align: left;
+    }
+
+    .page-subtitle {
+      color: #181A26;
+      font-size: 1.3vw;
+      margin-bottom: 3vh;
+      text-align: left;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: #343646;
+      border-radius: 2.3vh;
+      padding: 2.2vh 3.1vw;
+      margin-bottom: 3vh;
+      position: relative;
+    }
+
+    .section-title {
+      color: #D3D3D9;
+      font-size: 1.56vw;
+      font-family: 'DM Serif Text', serif;
+      margin-bottom: 2vh;
+    }
+
+    /* Footer */
+    .footer {
+      width: 100%;
+      height: 24.8vh;
+      background: #181A26;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 5vh;
+    }
+    
+    .footer-text {
+      text-align: center;
+      color: #D4D4D4;
+      font-size: 1.3vw;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1440px) {
+      .nav-item {
+        font-size: 16px;
+      }
+
+      .logo-box {
+        width: 40px;
+        height: 40px;
+      }
+
+      .page-title {
+        font-size: 42px;
+      }
+
+      .page-subtitle {
+        font-size: 24px;
+      }
+
+      .section-title {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        height: 60px;
+        padding: 0 20px;
+      }
+
+      .nav-right {
+        gap: 15px;
+      }
+
+      .nav-item {
+        font-size: 14px;
+      }
+
+      .logout-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+
+      .content-area {
+        padding: 20px;
+      }
+
+      .page-title {
+        font-size: 32px;
+      }
+
+      .page-subtitle {
+        font-size: 18px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .content-section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="PageContainer">
+    <!-- Header Navigation -->
+    <header class="header">
+      <div class="nav-left">
+        <div class="logo-box"></div>
+        <a href="#" class="nav-item">Our Memories</a>
+      </div>
+      <div class="nav-right">
+        <a href="#" class="nav-item">Gallery</a>
+        <a href="#" class="nav-item">Countdown</a>
+        <a href="#" class="nav-item">Music</a>
+        <a href="#" class="nav-item">Calendar</a>
+        <a href="#" class="nav-item">Profile</a>
+        <button class="logout-btn">Logout</button>
+      </div>
+    </header>
+
+    <!-- Area Konten Utama -->
+    <main class="content-area">
+      <h1 class="page-title">Page Title</h1>
+      <p class="page-subtitle">Page subtitle or description goes here.</p>
+
+      <!-- Content Section 1 -->
+      <section class="content-section">
+        <h2 class="section-title">Section Title</h2>
+        <!-- Konten spesifik akan diisi di sini -->
+      </section>
+
+      <!-- Content Section 2 -->
+      <section class="content-section">
+        <h2 class="section-title">Another Section</h2>
+        <!-- Konten spesifik akan diisi di sini -->
+      </section>
+
+      <!-- Tambahkan section lainnya sesuai kebutuhan -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">footer footer footer footer footer footer footer footer footer footer footer footer footer footer footer</p>
+    </footer>
+  </div>
+
+  <script>
+    // JavaScript untuk fungsi interaktif akan ditambahkan di sini
+    document.addEventListener('DOMContentLoaded', function() {
+      // Kode JavaScript spesifik halaman
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,132 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            📅 Event Management
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            
+            <!-- Header Actions -->
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">
+                    📅 Daftar Events & Jadwal
+                </h3>
+                <div class="flex space-x-3">
+                    <!-- ✅ REDIRECT KE CALENDAR UNTUK ADD EVENT -->
+                    <a href="{{ route('calendar') }}" 
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        ➕ Buat Event Baru
+                    </a>
+                    <a href="{{ route('calendar') }}" 
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        📅 Lihat Kalender
+                    </a>
+                </div>
+            </div>
+            </div>
+
+            <!-- Flash Messages -->
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    ✅ {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Events List -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6">
+                    @if($events->count() > 0)
+                        <div class="space-y-4">
+                            @foreach($events as $event)
+                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1">
+                                            <!-- Event Header -->
+                                            <div class="flex items-center space-x-2 mb-2">
+                                                <span class="text-2xl">{{ $event->getTypeIcon() }}</span>
+                                                <h4 class="text-lg font-semibold text-gray-800">
+                                                    {{ $event->title }}
+                                                </h4>
+                                                <span class="px-2 py-1 text-xs rounded 
+                                                    @if($event->type === 'cycle') bg-pink-100 text-pink-600
+                                                    @elseif($event->type === 'birthday') bg-yellow-100 text-yellow-600
+                                                    @else bg-blue-100 text-blue-600 @endif">
+                                                    {{ $event->getTypeLabel() }}
+                                                </span>
+                                            </div>
+                                            
+                                            <!-- Event Time -->
+                                            <div class="text-sm text-gray-600 mb-2">
+                                                <span class="font-medium">📅 Waktu:</span>
+                                                {{ $event->date_range }}
+                                            </div>
+                                            
+                                            <!-- Event Status & Info -->
+                                            <div class="flex items-center space-x-4 text-sm">
+                                                @if($event->isUpcoming())
+                                                    <span class="text-green-600 font-medium">🔮 Akan Datang</span>
+                                                @elseif($event->isToday())
+                                                    <span class="text-blue-600 font-medium">🎯 Hari Ini</span>
+                                                @else
+                                                    <span class="text-gray-500">📝 Selesai</span>
+                                                @endif
+                                                
+                                                <span class="text-gray-500">
+                                                    👤 {{ $event->creator->name }}
+                                                </span>
+                                                
+                                                <span class="text-gray-500">
+                                                    👥 {{ $event->users->count() }} orang
+                                                </span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Action Buttons -->
+                                        <div class="flex space-x-2">
+                                            <a href="{{ route('events.show', $event->id) }}" 
+                                               class="text-blue-600 hover:text-blue-800 text-sm">
+                                                👁️ Detail
+                                            </a>
+                                            <a href="{{ route('events.edit', $event->id) }}" 
+                                               class="text-green-600 hover:text-green-800 text-sm">
+                                                ✏️ Edit
+                                            </a>
+                                            @if($event->isCreatedBy(auth()->user()))
+                                                <form method="POST" action="{{ route('events.destroy', $event->id) }}" class="inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" 
+                                                            class="text-red-600 hover:text-red-800 text-sm"
+                                                            onclick="return confirm('Hapus event ini?')">
+                                                        🗑️ Hapus
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <!-- Empty State -->
+                        <div class="text-center py-12">
+                            <div class="text-gray-400 text-6xl mb-4">📅</div>
+                            <h5 class="text-lg font-semibold text-gray-600 mb-2">
+                                Belum ada events
+                            </h5>
+                            <p class="text-gray-500 mb-4">
+                                Mulai buat jadwal events, acara, atau tracking cycle untuk planning yang lebih baik!
+                            </p>
+                            <a href="{{ route('events.create') }}" 
+                               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Buat Event Pertama
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
