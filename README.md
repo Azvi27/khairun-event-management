@@ -12,7 +12,12 @@ Khairun adalah sistem manajemen kenangan dan acara pribadi yang komprehensif, di
 ## 📸 Screenshot Halaman
 ![Halaman depan](Docs/Halaman_Depan.jpg)
 *Halaman Awal*
-*(Di sini tempat untuk menaruh GIF atau link video demo Anda)*
+
+![Halaman OTP](Docs/OTP.jpg)
+*Halaman OTP*
+
+![Halaman dashboard](Docs/Halaman_Dashboard.jpg)
+*Halaman Dashboard*
 
 ## ✨ Fitur Unggulan
 - **✍️ Manajemen Kenangan:** Simpan momen berharga dengan teks, gambar, dan integrasi musik Spotify dalam format timeline yang indah.
