@@ -10,6 +10,8 @@
 Khairun adalah sistem manajemen kenangan dan acara pribadi yang komprehensif, dirancang untuk membantu pengguna mengorganisir, menyimpan, dan berbagi momen berharga dalam hidup mereka.
 
 ## 📸 Screenshot Halaman
+![Halaman depan](Docs/Halaman_Depan.jpg)
+*Halaman Awal*
 *(Di sini tempat untuk menaruh GIF atau link video demo Anda)*
 
 ## ✨ Fitur Unggulan
