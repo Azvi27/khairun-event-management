@@ -54,4 +54,4 @@ Sistem ini dibangun di atas **5-Layer Architecture** untuk memastikan pemisahan 
 5.  **Jalankan Server:** `npm run dev` & `php artisan serve`
 
 ## 📖 Dokumentasi Teknis Lengkap
-Untuk penjelasan mendalam mengenai **Detail API, Strategi Testing, dan Alur Kerja Deployment**, silakan kunjungi **[Halaman Wiki Proyek ini]**.
+Untuk penjelasan mendalam mengenai **Detail API, Strategi Testing, dan Alur Kerja Deployment**, silakan kunjungi **Halaman Wiki Proyek ini**.
