@@ -1,9 +1,0 @@
-Aku ingin website itu dapat :
-1.   Halaman selamat datang sebagai sambutan 
- 2.   Perkenalan tentang website serta ada tombol untuk masuk (login)  
- 3.   Halaman Login disini aku ingin menggunakan keamanan karena nanti akan kuhosting, aku memikirkan cara dengan ada masukan email dan password di halaman login lalu nanti pasword dan email di hashing atau dibandingkan dengan database itu keamanan tahap 1 dan tahap 2 nya setalah benar email dan pasword yang dimasukkan sama dengan database selanjutnya akan diberitahu ke email tersbut mendapatkan token/OTP/Kode masuk. Setelah keamanan ini masuk kedalam dashboard 
- 4.   Halaman pertama/dashboard terdapat timeline bentuk horizontal yang menceritakan tentang kenang-kenagan yang sudah dilewati disini aku berpikir bisa menginput tanggal, deskripsi kenangan timeline,dan juga bisa mengupload gambar (Aku kepikiran memanfaatkan Cloudflare R2) karena dari yang kucari tahu gambar susah disimpan di database dan bisa saja gagal jika disimpan lebih baik menggunakan cloud storage (pemilihan Cloudflare R2 selain dapat 10 GB juga gartis) 
- 5.   Masih di halaman yang sama atau dashboard terdapat penghitung mundur waktu untuk ulang tahunnya saat penghitung mundur berakhir akan terkirim ucapan/link atau gambar atau video yang ditampilkan di halaman dashboard dari akun ku kepada dia 
- 6.   Halaman berikutnya yaitu kalender yang bisa memasukkan acara/kegiatan yang memudahkan dia mengingat dan juga bisa dipakai memudahkannya untuk keperluannya menghitung masa mestrusinya 
- 7.   Halaman profil akun  atau setting dimana berisi profil seperti akun, email akun, password, dll. Pada halaman ini juga dapat mengubah foto profil, password, dll 
- 8.   Aku berencana juga menggunakan API spotify yang dimana dia bisa mendengarkan musik. Aku berpikir untuk menambah halaman lagi, API ini juga dapat dihubungkan di halaman dashboard untuk timeline dia bisa memilih musik sesuai mood atau keinginannya dan juga di bagian kalender 
