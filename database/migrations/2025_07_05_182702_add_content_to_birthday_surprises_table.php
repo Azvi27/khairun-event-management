@@ -6,23 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('birthday_surprises', function (Blueprint $table) {
+            // Add missing columns that should have been in the original table
             $table->string('content')->nullable()->after('content_payload');
+            $table->boolean('is_revealed')->default(false)->after('reveal_at');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('birthday_surprises', function (Blueprint $table) {
-            $table->dropColumn('content');
+            $table->dropColumn(['content', 'is_revealed']);
         });
     }
 };

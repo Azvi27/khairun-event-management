@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- ADD THIS -->
     <title>Verify OTP - Our Memories</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
-    <link href="{{ asset('css/otp.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/otp-enhanced.css') }}" rel="stylesheet">
 </head>
 <body>
     <div class="otp-page">
@@ -20,85 +20,88 @@
             <div class="brand-name">Our Memories</div>
         </header>
 
-        <!-- OTP Form -->
-        <div class="otp-container">
-            <h1 class="otp-title">Verify Your Identity</h1>
-            <p class="otp-subtitle">
-                Kami telah mengirim kode OTP 6 digit ke email Anda. Silakan masukkan kode tersebut untuk melanjutkan login.
-            </p>
-            <p class="otp-instructions">
-                Kode OTP telah dikirim ke email Anda. Silakan cek inbox/spam.
-            </p>
+        <!-- Main Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- OTP Form -->
+            <div class="otp-container">
+                <h1 class="otp-title">Verify Your Identity</h1>
+                <p class="otp-subtitle">
+                    Kami telah mengirim kode OTP 6 digit ke email Anda. Silakan masukkan kode tersebut untuk melanjutkan login.
+                </p>
+                <p class="otp-instructions">
+                    Kode OTP telah dikirim ke email Anda. Silakan cek inbox/spam.
+                </p>
 
-            <!-- Timer Warning -->
-            <div class="timer-warning">
-                <span class="icon">⏰</span>
-                <span>Kode OTP berlaku selama 10 menit</span>
-            </div>
-
-            <!-- Session Status -->
-            @if (session('status'))
-                <div class="success-message">
-                    {{ session('status') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="error-message">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('otp.verify.post') }}">
-                @csrf
-                
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                <div class="otp-input-container">
-                    <label for="otp" class="otp-label">Kode OTP (6 Digit)</label>
-                    <input id="otp" 
-                           name="otp" 
-                           type="text" 
-                           class="otp-input" 
-                           maxlength="6"
-                           pattern="[0-9]{6}"
-                           required 
-                           autofocus 
-                           autocomplete="one-time-code"
-                           placeholder="123456">
-                    @error('otp_code')
-                        <div class="error-message">{{ $message }}</div>
-                    @enderror
+                <!-- Timer Warning -->
+                <div class="timer-warning">
+                    <span class="icon">⏰</span>
+                    <span>Kode OTP berlaku selama 10 menit</span>
                 </div>
 
-                <!-- Security Tips -->
-                <div class="security-tips">
-                    <div class="tips-title">
-                        <span>💡</span> Tips Keamanan
+                <!-- Session Status -->
+                @if (session('status'))
+                    <div class="success-message">
+                        {{ session('status') }}
                     </div>
-                    <ul class="tips-list">
-                        <li>Jangan bagikan kode OTP kepada siapa pun</li>
-                        <li>Pastikan Anda berada di website yang benar</li>
-                        <li>Kode OTP hanya berlaku untuk satu kali penggunaan</li>
-                    </ul>
-                </div>
+                @endif
 
-                <div class="button-container">
-                    <button type="submit" class="verify-button" id="verifyBtn">
-                        🔐 VERIFIKASI OTP
-                    </button>
-                    <a href="{{ route('login') }}" class="back-button">
-                        ← Kembali ke Login
+                @if (session('error'))
+                    <div class="error-message">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('otp.verify.post') }}">
+                    @csrf
+                    
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                    <div class="otp-input-container">
+                        <label for="otp" class="otp-label">Kode OTP (6 Digit)</label>
+                        <input id="otp" 
+                               name="otp" 
+                               type="text" 
+                               class="otp-input" 
+                               maxlength="6"
+                               pattern="[0-9]{6}"
+                               required 
+                               autofocus 
+                               autocomplete="one-time-code"
+                               placeholder="123456">
+                        @error('otp_code')
+                            <div class="error-message">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Security Tips -->
+                    <div class="security-tips">
+                        <div class="tips-title">
+                            <span>💡</span> Tips Keamanan
+                        </div>
+                        <ul class="tips-list">
+                            <li>Jangan bagikan kode OTP kepada siapa pun</li>
+                            <li>Pastikan Anda berada di website yang benar</li>
+                            <li>Kode OTP hanya berlaku untuk satu kali penggunaan</li>
+                        </ul>
+                    </div>
+
+                    <div class="button-container">
+                        <button type="submit" class="verify-button" id="verifyBtn">
+                            🔐 VERIFIKASI OTP
+                        </button>
+                        <a href="{{ route('login') }}" class="back-button">
+                            ← Kembali ke Login
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Resend OTP -->
+                <div class="resend-container">
+                    <div class="resend-text">Tidak menerima kode OTP?</div>
+                    <a href="#" class="resend-link" onclick="resendOTP()">
+                        📧 Kirim Ulang Kode OTP
                     </a>
                 </div>
-            </form>
-
-            <!-- Resend OTP -->
-            <div class="resend-container">
-                <div class="resend-text">Tidak menerima kode OTP?</div>
-                <a href="#" class="resend-link" onclick="resendOTP()">
-                    📧 Kirim Ulang Kode OTP
-                </a>
             </div>
         </div>
 

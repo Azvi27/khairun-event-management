@@ -43,6 +43,52 @@ return [
             'after_commit' => false,
         ],
 
+        // Specialized queues for different job types
+        'image-processing' => [
+            'driver' => 'database',
+            'connection' => env('DB_QUEUE_CONNECTION'),
+            'table' => env('DB_QUEUE_TABLE', 'jobs'),
+            'queue' => 'image-processing',
+            'retry_after' => (int) env('DB_QUEUE_RETRY_AFTER', 300), // 5 minutes for image processing
+            'after_commit' => false,
+        ],
+
+        'notifications' => [
+            'driver' => 'database',
+            'connection' => env('DB_QUEUE_CONNECTION'),
+            'table' => env('DB_QUEUE_TABLE', 'jobs'),
+            'queue' => 'notifications',
+            'retry_after' => (int) env('DB_QUEUE_RETRY_AFTER', 60),
+            'after_commit' => false,
+        ],
+
+        'emails' => [
+            'driver' => 'database',
+            'connection' => env('DB_QUEUE_CONNECTION'),
+            'table' => env('DB_QUEUE_TABLE', 'jobs'),
+            'queue' => 'emails',
+            'retry_after' => (int) env('DB_QUEUE_RETRY_AFTER', 120),
+            'after_commit' => false,
+        ],
+
+        'broadcasts' => [
+            'driver' => 'database',
+            'connection' => env('DB_QUEUE_CONNECTION'),
+            'table' => env('DB_QUEUE_TABLE', 'jobs'),
+            'queue' => 'broadcasts',
+            'retry_after' => (int) env('DB_QUEUE_RETRY_AFTER', 30),
+            'after_commit' => false,
+        ],
+
+        'birthday-surprises' => [
+            'driver' => 'database',
+            'connection' => env('DB_QUEUE_CONNECTION'),
+            'table' => env('DB_QUEUE_TABLE', 'jobs'),
+            'queue' => 'birthday-surprises',
+            'retry_after' => (int) env('DB_QUEUE_RETRY_AFTER', 120),
+            'after_commit' => false,
+        ],
+
         'beanstalkd' => [
             'driver' => 'beanstalkd',
             'host' => env('BEANSTALKD_QUEUE_HOST', 'localhost'),

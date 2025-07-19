@@ -25,6 +25,11 @@ class User extends Authenticatable
         'profile_photo_path',
         'otp_code',
         'otp_expires_at',
+        'spotify_id',
+        'spotify_access_token',
+        'spotify_refresh_token',
+        'spotify_token_expires_at',
+        'spotify_user_data',
     ];
 
     /**
@@ -36,6 +41,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'otp_code', // Hide OTP for security
+        'spotify_access_token', // Hide Spotify tokens for security
+        'spotify_refresh_token',
     ];
 
     /**
@@ -49,6 +56,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'otp_expires_at' => 'datetime', // Cast OTP expiry as datetime
+            'spotify_token_expires_at' => 'datetime', // Cast Spotify token expiry as datetime
+            'spotify_user_data' => 'array', // Cast Spotify user data as array
         ];
     } 
     
@@ -135,5 +144,53 @@ class User extends Authenticatable
         }
         
         return Carbon::now()->isAfter($this->otp_expires_at);
+    }
+    
+    // ========== SPOTIFY METHODS ==========
+    
+    /**
+     * Check if user has connected Spotify account
+     */
+    public function hasSpotifyConnection()
+    {
+        return !empty($this->spotify_access_token) && 
+               (!$this->spotify_token_expires_at || Carbon::now()->isBefore($this->spotify_token_expires_at));
+    }
+    
+    /**
+     * Check if Spotify token needs refresh
+     */
+    public function needsSpotifyTokenRefresh()
+    {
+        if (!$this->spotify_access_token || !$this->spotify_token_expires_at) {
+            return false;
+        }
+        
+        // Refresh token if it expires in the next 5 minutes
+        return Carbon::now()->addMinutes(5)->isAfter($this->spotify_token_expires_at);
+    }
+    
+    /**
+     * Get Spotify user display name
+     */
+    public function getSpotifyDisplayName()
+    {
+        if (!$this->spotify_user_data) {
+            return null;
+        }
+        
+        return $this->spotify_user_data['display_name'] ?? 'Unknown';
+    }
+    
+    /**
+     * Get Spotify user profile image
+     */
+    public function getSpotifyProfileImage()
+    {
+        if (!$this->spotify_user_data || !isset($this->spotify_user_data['images'])) {
+            return null;
+        }
+        
+        return $this->spotify_user_data['images'][0]['url'] ?? null;
     }
 }

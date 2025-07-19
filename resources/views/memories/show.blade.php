@@ -233,26 +233,18 @@
 
     <div class="memory-card">
         <!-- Image Section -->
-        @if($memory->image_path && app('App\Services\StorageService')->fileExists($memory->image_path))
+        @if($memory->image_path)
             <div class="memory-image-section">
-                <img src="{{ app('App\Services\StorageService')->getFileUrl($memory->image_path) }}" 
+                <img src="{{ asset('storage/' . $memory->image_path) }}" 
                      alt="Memory from {{ $memory->memory_date->format('F d, Y') }}" 
                      class="memory-hero-image">
             </div>
         @else
             <div class="memory-no-image">
-                @if($memory->image_path)
-                    <div style="text-align: center;">
-                        <div style="font-size: 3rem; margin-bottom: 10px;">🖼️</div>
-                        <div>Image not found</div>
-                        <div style="font-size: 0.9rem; opacity: 0.7;">{{ $memory->image_path }}</div>
-                    </div>
-                @else
-                    <div style="text-align: center;">
-                        <div style="font-size: 3rem; margin-bottom: 10px;">💭</div>
-                        <div>Text-only memory</div>
-                    </div>
-                @endif
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 10px;">💭</div>
+                    <div>Text-only memory</div>
+                </div>
             </div>
         @endif
         

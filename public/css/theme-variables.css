@@ -1,0 +1,154 @@
+/* === KHAIRUN THEME VARIABLES === */
+/* Centralized theme management for consistent styling across all pages */
+
+:root {
+  /* === PRIMARY COLORS === */
+  --color-primary-bg: #343646;
+  --color-primary-bg-light: rgba(52, 54, 70, 0.8);
+  --color-primary-bg-dark: rgba(30, 32, 45, 0.8);
+  --color-accent: #8CE0FF;
+  --color-accent-hover: #6bd4ff;
+  --color-accent-light: rgba(140, 224, 255, 0.1);
+  --color-accent-medium: rgba(140, 224, 255, 0.3);
+  --color-accent-strong: rgba(140, 224, 255, 0.5);
+  
+  /* === TEXT COLORS === */
+  --color-text-primary: #D3D3D9;
+  --color-text-secondary: rgba(211, 211, 217, 0.8);
+  --color-text-muted: rgba(211, 211, 217, 0.6);
+  --color-text-dark: #1e293b;
+  
+  /* === BACKGROUND COLORS === */
+  --bg-body: #343646;
+  --bg-card: rgba(30, 32, 45, 0.8);
+  --bg-card-hover: rgba(52, 54, 70, 0.9);
+  --bg-overlay: rgba(26, 31, 46, 0.85);
+  --bg-glass: rgba(255, 255, 255, 0.1);
+  
+  /* === BORDER COLORS === */
+  --border-primary: rgba(140, 224, 255, 0.2);
+  --border-secondary: rgba(140, 224, 255, 0.1);
+  --border-hover: rgba(140, 224, 255, 0.5);
+  --border-focus: rgba(140, 224, 255, 0.7);
+  
+  /* === SHADOW COLORS === */
+  --shadow-primary: rgba(0, 0, 0, 0.3);
+  --shadow-secondary: rgba(0, 0, 0, 0.2);
+  --shadow-accent: rgba(140, 224, 255, 0.1);
+  --shadow-accent-strong: rgba(140, 224, 255, 0.3);
+  
+  /* === GRADIENTS === */
+  --gradient-primary: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  --gradient-background: linear-gradient(135deg, var(--color-primary-bg-light) 0%, var(--color-primary-bg-dark) 100%);
+  --gradient-text: linear-gradient(135deg, #ffffff 0%, #D3D3D9 50%, var(--color-accent) 100%);
+  --gradient-overlay: linear-gradient(135deg, rgba(26, 31, 46, 0.85) 0%, rgba(36, 43, 61, 0.85) 100%);
+  
+  /* === SPACING === */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* === BORDER RADIUS === */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 25px;
+  --radius-full: 50px;
+  
+  /* === TRANSITIONS === */
+  --transition-fast: all 0.15s ease;
+  --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* === TYPOGRAPHY === */
+  --font-primary: 'Inter', sans-serif;
+  --font-heading: 'Playfair Display', serif;
+  --font-accent: 'Poppins', sans-serif;
+  
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+  --font-size-4xl: 3rem;
+  
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  /* === Z-INDEX === */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
+}
+
+/* === DARK THEME UTILITIES === */
+.theme-dark {
+  --bg-body: var(--color-primary-bg);
+  --color-text: var(--color-text-primary);
+}
+
+/* === COMPONENT MIXINS === */
+.glass-effect {
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-secondary);
+}
+
+.card-shadow {
+  box-shadow: 
+    0 4px 15px var(--shadow-primary),
+    0 2px 8px var(--shadow-accent);
+}
+
+.card-shadow-hover {
+  box-shadow: 
+    0 8px 25px var(--shadow-primary),
+    0 4px 15px var(--shadow-accent-strong);
+}
+
+.accent-glow {
+  box-shadow: 0 0 20px var(--shadow-accent-strong);
+}
+
+.text-gradient {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* === RESPONSIVE BREAKPOINTS === */
+@media (max-width: 640px) {
+  :root {
+    --font-size-4xl: 2.5rem;
+    --font-size-3xl: 1.75rem;
+    --space-2xl: 2rem;
+    --space-3xl: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-size-4xl: 2rem;
+    --font-size-3xl: 1.5rem;
+    --space-xl: 1.5rem;
+    --space-2xl: 1.75rem;
+  }
+}

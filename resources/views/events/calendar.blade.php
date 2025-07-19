@@ -28,10 +28,12 @@
 
     .section-title {
         color: #D3D3D9;
-        font-size: 1.4vw;
+        font-size: clamp(20px, 1.8vw, 26px);
         font-family: 'DM Serif Text', serif;
-        margin-bottom: 2vh;
+        font-weight: 600;
+        margin-bottom: 2.5vh;
         text-align: center;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
     /* Calendar Navigation */
@@ -43,26 +45,28 @@
     }
 
     .nav-btn {
-        background: #8CE0FF;
+        background: linear-gradient(135deg, #8CE0FF 0%, #6bd4ff 100%);
         border: none;
         border-radius: 50%;
-        width: 2.5vw;
-        height: 2.5vw;
+        width: 3vw;
+        height: 3vw;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         transition: all 0.3s ease;
-        font-size: 1.2vw;
+        font-size: clamp(18px, 1.4vw, 24px);
         color: #181A26;
         font-weight: bold;
-        min-width: 35px;
-        min-height: 35px;
+        min-width: 45px;
+        min-height: 45px;
+        box-shadow: 0 3px 10px rgba(140, 224, 255, 0.3);
     }
 
     .nav-btn:hover {
-        background: #6bd4ff;
-        transform: scale(1.1);
+        background: linear-gradient(135deg, #6bd4ff 0%, #4ac3f7 100%);
+        transform: scale(1.15);
+        box-shadow: 0 5px 15px rgba(140, 224, 255, 0.5);
     }
 
     .month-year-selector {
@@ -74,27 +78,32 @@
     .month-select, .year-select {
         background: #181A26;
         color: #D3D3D9;
-        border: 1px solid #8CE0FF;
-        border-radius: 1vh;
-        padding: 0.8vh 1.2vw;
-        font-size: clamp(14px, 0.9vw, 18px);
+        border: 2px solid #8CE0FF;
+        border-radius: 1.2vh;
+        padding: 1vh 1.5vw;
+        font-size: clamp(16px, 1.1vw, 20px);
         font-family: 'DM Serif Text', serif;
+        font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(140, 224, 255, 0.2);
     }
 
     .month-select:hover, .year-select:hover {
         background: #343646;
         border-color: #6bd4ff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(140, 224, 255, 0.4);
     }
 
     .current-month-year {
         color: #8CE0FF;
-        font-size: clamp(16px, 1.1vw, 22px);
+        font-size: clamp(20px, 1.6vw, 28px);
         font-family: 'DM Serif Text', serif;
-        font-weight: 600;
-        min-width: 12vw;
+        font-weight: 700;
+        min-width: 15vw;
         text-align: center;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
     /* Calendar Grid */
@@ -106,38 +115,46 @@
     }
 
     .day-header {
-        color: #D4D4D4;
-        font-size: clamp(12px, 0.85vw, 16px);
-        font-weight: 600;
+        color: #8CE0FF;
+        font-size: clamp(16px, 1.1vw, 20px);
+        font-weight: 700;
         text-align: center;
-        padding: 1vh;
+        padding: 1.5vh;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .calendar-date {
         color: #D4D4D4;
-        font-size: clamp(12px, 0.8vw, 16px);
+        font-size: clamp(16px, 1.1vw, 20px);
+        font-weight: 500;
         text-align: center;
-        padding: 1.2vh;
-        height: 3.5vw;
-        min-height: 40px;
+        padding: 1.8vh;
+        height: 4.5vw;
+        min-height: 55px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 0.5vh;
+        border-radius: 0.8vh;
         transition: all 0.3s ease;
         cursor: pointer;
         position: relative;
+        border: 1px solid transparent;
     }
 
     .calendar-date:hover {
-        background: rgba(140, 224, 255, 0.1);
-        transform: scale(1.05);
+        background: rgba(140, 224, 255, 0.2);
+        border-color: #8CE0FF;
+        transform: scale(1.08);
+        box-shadow: 0 4px 12px rgba(140, 224, 255, 0.3);
     }
 
     .calendar-date.today {
-        background: rgba(140, 224, 255, 0.3);
+        background: linear-gradient(135deg, rgba(140, 224, 255, 0.4) 0%, rgba(140, 224, 255, 0.2) 100%);
         border: 2px solid #8CE0FF;
-        font-weight: 600;
+        font-weight: 700;
+        color: #FFFFFF;
+        box-shadow: 0 4px 15px rgba(140, 224, 255, 0.4);
     }
 
     .calendar-date.other-month {
@@ -168,48 +185,58 @@
 
     .quick-nav-btn {
         background: transparent;
-        border: 1px solid #8CE0FF;
+        border: 2px solid #8CE0FF;
         color: #8CE0FF;
-        padding: 0.6vh 1.2vw;
-        border-radius: 1vh;
+        padding: 1vh 1.8vw;
+        border-radius: 1.5vh;
         cursor: pointer;
-        font-size: clamp(12px, 0.75vw, 14px);
+        font-size: clamp(14px, 0.9vw, 16px);
+        font-weight: 600;
         transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .quick-nav-btn:hover {
-        background: #8CE0FF;
+        background: linear-gradient(135deg, #8CE0FF 0%, #6bd4ff 100%);
         color: #181A26;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(140, 224, 255, 0.4);
     }
 
     /* Form Styles */
     .form-group {
-        margin-bottom: 1.5vh;
+        margin-bottom: 2.2vh;
     }
 
     .form-label {
         color: #D3D3D9;
-        font-size: clamp(14px, 0.9vw, 18px);
-        font-weight: 500;
-        margin-bottom: 0.5vh;
+        font-size: clamp(16px, 1.1vw, 20px);
+        font-weight: 600;
+        margin-bottom: 0.8vh;
         display: block;
+        letter-spacing: 0.5px;
     }
 
     .form-input {
         width: 100%;
-        padding: 1vh;
-        border-radius: 1vh;
-        border: 1px solid #D3D3D9;
-        background: transparent;
+        padding: 1.4vh 1.2vw;
+        border-radius: 1.2vh;
+        border: 2px solid #4A4D63;
+        background: rgba(24, 26, 38, 0.5);
         color: #D3D3D9;
-        font-size: clamp(13px, 0.8vw, 16px);
+        font-size: clamp(15px, 1vw, 18px);
         font-family: 'Poppins', sans-serif;
-        transition: border-color 0.3s ease;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
     }
 
     .form-input:focus {
         outline: none;
         border-color: #8CE0FF;
+        background: rgba(24, 26, 38, 0.8);
+        box-shadow: 0 0 15px rgba(140, 224, 255, 0.3);
+        transform: translateY(-2px);
     }
 
     .form-row {
@@ -223,22 +250,26 @@
     }
 
     .add-btn {
-        background: #8CE0FF;
-        border-radius: 2vh;
-        padding: 1vh 2vw;
+        background: linear-gradient(135deg, #8CE0FF 0%, #6bd4ff 100%);
+        border-radius: 2.5vh;
+        padding: 1.5vh 3vw;
         color: #181A26;
-        font-size: clamp(14px, 0.85vw, 16px);
+        font-size: clamp(16px, 1.1vw, 20px);
+        font-weight: 700;
         border: none;
         float: right;
-        margin-top: 1vh;
+        margin-top: 1.5vh;
         cursor: pointer;
         transition: all 0.3s ease;
-        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(140, 224, 255, 0.4);
     }
 
     .add-btn:hover {
-        background: #6bd4ff;
-        transform: translateY(-2px);
+        background: linear-gradient(135deg, #6bd4ff 0%, #4ac3f7 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(140, 224, 255, 0.6);
     }
 
     /* Events List */
@@ -354,30 +385,36 @@
     .checkbox-item {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px;
+        gap: 15px;
+        padding: 1.5vh 1.2vw;
         background: rgba(211, 211, 217, 0.1);
-        border-radius: 8px;
+        border-radius: 1.2vh;
+        border: 1px solid transparent;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
     }
 
     .checkbox-item:hover {
-        background: rgba(140, 224, 255, 0.1);
+        background: rgba(140, 224, 255, 0.15);
+        border-color: rgba(140, 224, 255, 0.3);
+        transform: translateX(5px);
     }
 
     .checkbox-input {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         accent-color: #8CE0FF;
         cursor: pointer;
+        transform: scale(1.2);
     }
 
     .checkbox-label {
         color: #D3D3D9;
-        font-size: 14px;
+        font-size: clamp(15px, 1vw, 18px);
+        font-weight: 500;
         cursor: pointer;
         flex: 1;
+        letter-spacing: 0.3px;
     }
 
     .creator-badge {
@@ -389,6 +426,100 @@
         font-weight: 500;
         margin-left: 8px;
     }
+</style>
+@endpush
+
+@push('styles')
+<style>
+/* Mobile Calendar Optimization */
+@media (max-width: 768px) {
+    .calendar-container {
+        padding: var(--spacing-md);
+    }
+    
+    .calendar-header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        padding: var(--spacing-lg);
+    }
+    
+    .calendar-title {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .calendar-nav {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .calendar-nav-btn {
+        padding: var(--spacing-md);
+        font-size: var(--font-size-lg);
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+        gap: 1px;
+        font-size: var(--font-size-xs);
+    }
+    
+    .calendar-day {
+        aspect-ratio: 1;
+        padding: var(--spacing-xs);
+        font-size: var(--font-size-xs);
+        min-height: 44px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .calendar-day.has-events {
+        font-size: var(--font-size-xs);
+    }
+    
+    .calendar-day-number {
+        font-size: var(--font-size-sm);
+    }
+    
+    .calendar-events {
+        margin-top: var(--spacing-xs);
+    }
+    
+    .calendar-event {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        margin: 1px;
+    }
+    
+    .event-form {
+        padding: var(--spacing-lg);
+    }
+    
+    .event-form-group {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .event-form-input {
+        width: 100%;
+        padding: var(--spacing-md);
+        font-size: var(--font-size-base);
+    }
+    
+    .event-form-actions {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .event-btn {
+        width: 100%;
+        padding: var(--spacing-md);
+        font-size: var(--font-size-base);
+    }
+}
 </style>
 @endpush
 
@@ -538,7 +669,7 @@
                         <span class="icon">🏷️</span>
                         Event Type
                     </label>
-                    <select id="type" name="type" class="form-select" required>
+                    <select id="type" name="type" class="form-input" required>
                         <option value="">Select event type...</option>
                         <option value="event">🎉 General Event</option>
                         <option value="cycle">🔄 Cycle Tracking</option>

@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon; // Library untuk handle tanggal
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use App\Models\User;
 
 class BirthdaySurprise extends Model
 {
+    use HasFactory;
+    
     protected $fillable = [
         'sender_user_id',
         'receiver_user_id',
@@ -18,7 +22,6 @@ class BirthdaySurprise extends Model
         'content'
     ];
 
-    // TAMBAH INI:
     protected $casts = [
         'photos' => 'array',
         'is_revealed' => 'boolean',
@@ -87,7 +90,7 @@ class BirthdaySurprise extends Model
             'message' => '💌',
             'image' => '🖼️', 
             'video_link' => '🎥',
-            default => '��'
+            default => '🎁'
         };
     }
 

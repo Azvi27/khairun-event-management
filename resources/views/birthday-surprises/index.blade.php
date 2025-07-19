@@ -182,6 +182,62 @@
     font-size: 1.1rem;
     opacity: 0.8;
 }
+
+/* Mobile Birthday Surprise Optimization */
+@media (max-width: 768px) {
+    .surprise-page-header {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .surprise-page-title {
+        font-size: var(--font-size-3xl);
+    }
+    
+    .surprise-page-subtitle {
+        font-size: var(--font-size-base);
+    }
+    
+    .create-surprise-btn {
+        width: 100%;
+        padding: var(--spacing-lg);
+        font-size: var(--font-size-lg);
+        text-align: center;
+        display: block;
+    }
+    
+    .surprise-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        padding: 0 var(--spacing-md);
+    }
+    
+    .surprise-card {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .surprise-actions {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .action-btn {
+        width: 100%;
+        padding: var(--spacing-md);
+        text-align: center;
+        font-size: var(--font-size-base);
+    }
+    
+    .section-header {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .section-title {
+        font-size: var(--font-size-2xl);
+    }
+}
 </style>
 @endpush
 

@@ -2,10 +2,28 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#181A26">
+    <meta name="mobile-web-app-capable" content="yes">
+    
     <title>@yield('title', 'Our Memories')</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/khairun.css') }}">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts optimized for mobile -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Touch icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
+    
+    {{-- ✅ FIXED CSS - No more scrolling issues --}}
+    <link rel="stylesheet" href="{{ asset('css/khairun-fixed.css') }}">
     @stack('styles')
 </head>
 <body>
@@ -39,6 +57,7 @@
             <p class="footer-text">Copyright &copy; {{ date('Y') }} Khairun Project. All rights reserved.</p>
         </footer>
     </div>
+    <script src="{{ asset('js/mobile-enhancements.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

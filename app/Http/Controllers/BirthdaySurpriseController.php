@@ -77,7 +77,15 @@ class BirthdaySurpriseController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'receiver_user_id' => 'required|exists:users,id|different:' . auth()->id(),
+            'receiver_user_id' => [
+                'required',
+                'exists:users,id',
+                function ($attribute, $value, $fail) {
+                    if ($value == auth()->id()) {
+                        $fail('Kamu tidak bisa membuat surprise untuk diri sendiri.');
+                    }
+                },
+            ],
             'content_type' => 'required|in:message,image,video_link',
             'content_payload' => 'required|string|max:2000|min:1',
             'reveal_at' => 'required|date|after:now|before:' . now()->addYears(2),

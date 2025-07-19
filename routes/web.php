@@ -93,9 +93,34 @@ Route::middleware('auth')->group(function () {
     Route::get('/music', [App\Http\Controllers\MusicController::class, 'index'])->name('music.index');
     Route::get('/music/search', [App\Http\Controllers\MusicController::class, 'search'])->name('music.search');
     Route::get('/music/track/{trackId}', [App\Http\Controllers\MusicController::class, 'track'])->name('music.track');
+    
+    // Music Playlist & Playback Routes
+    Route::prefix('music')->name('music.')->group(function () {
+        Route::get('/playlists', [App\Http\Controllers\MusicController::class, 'playlists'])->name('playlists');
+        Route::get('/playlist/{playlistId}/tracks', [App\Http\Controllers\MusicController::class, 'playlistTracks'])->name('playlist.tracks');
+        Route::post('/play', [App\Http\Controllers\MusicController::class, 'play'])->name('play');
+        Route::post('/pause', [App\Http\Controllers\MusicController::class, 'pause'])->name('pause');
+        Route::post('/next', [App\Http\Controllers\MusicController::class, 'next'])->name('next');
+        Route::post('/previous', [App\Http\Controllers\MusicController::class, 'previous'])->name('previous');
+        Route::get('/current-playback', [App\Http\Controllers\MusicController::class, 'currentPlayback'])->name('current-playback');
+    });
+    
+    // Spotify Authentication Routes
+    Route::prefix('spotify')->name('spotify.')->group(function () {
+        Route::get('/connect', [App\Http\Controllers\SpotifyAuthController::class, 'redirectToSpotify'])->name('connect');
+        Route::get('/callback', [App\Http\Controllers\SpotifyAuthController::class, 'handleCallback'])->name('callback');
+        Route::post('/disconnect', [App\Http\Controllers\SpotifyAuthController::class, 'disconnect'])->name('disconnect');
+        Route::get('/status', [App\Http\Controllers\SpotifyAuthController::class, 'status'])->name('status');
+        Route::post('/refresh-token', [App\Http\Controllers\SpotifyAuthController::class, 'refreshToken'])->name('refresh-token');
+    });
 });
 
 require __DIR__.'/auth.php';
+
+// OTP Demo Route (untuk testing enhanced OTP page)
+Route::get('/otp-demo', function () {
+    return view('auth.verify-otp-enhanced');
+})->name('otp.demo');
 
 // Hanya untuk development
 if (config('app.env') === 'local') {

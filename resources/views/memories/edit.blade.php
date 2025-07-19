@@ -178,7 +178,10 @@
                             @if($memory->image_path)
                         <div style="margin-bottom: 1.5vh;">
                             <p style="color: #8F8C8C; margin-bottom: 1vh;">Current photo:</p>
-                            <img src="{{ Storage::url($memory->image_path) }}" alt="Current memory" class="current-image">
+                            <img src="{{ asset('storage/' . $memory->image_path) }}" 
+     alt="Current memory" 
+     class="current-image"
+     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'text-align:center; padding:20px; color:#64748b;\'><div style=\'font-size:2rem;\'>📷</div><div>Image not available</div></div>';">
                                 </div>
                             @endif
                             

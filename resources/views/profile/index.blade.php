@@ -31,6 +31,52 @@
     animation: float 6s ease-in-out infinite;
 }
 
+/* Profile Mobile Optimization */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: var(--spacing-md);
+    }
+    
+    .profile-header {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .profile-title {
+        font-size: var(--font-size-3xl);
+    }
+    
+    .profile-subtitle {
+        font-size: var(--font-size-base);
+    }
+    
+    .profile-avatar-section {
+        padding: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .tab-navigation {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .tab-btn {
+        width: 100%;
+        padding: var(--spacing-md);
+        font-size: var(--font-size-base);
+    }
+    
+    .profile-section {
+        padding: var(--spacing-lg);
+    }
+    
+    .section-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+}
+
 @keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     50% { transform: translateY(-20px) rotate(180deg); }

@@ -200,6 +200,345 @@ class SpotifyService
         return $this->mockMode;
     }
 
+    /**
+     * Get user's playlists
+     */
+    public function getUserPlaylists($user, $limit = 20)
+    {
+        if ($this->mockMode || !$user->hasSpotifyConnection()) {
+            return $this->getMockPlaylists();
+        }
+
+        try {
+            $accessToken = $this->getUserAccessToken($user);
+            
+            $response = Http::withToken($accessToken)
+                          ->get('https://api.spotify.com/v1/me/playlists', [
+                              'limit' => $limit
+                          ]);
+
+            if ($response->successful()) {
+                $playlists = $response->json()['items'];
+                
+                return collect($playlists)->map(function ($playlist) {
+                    return [
+                        'id' => $playlist['id'],
+                        'name' => $playlist['name'],
+                        'description' => $playlist['description'],
+                        'image' => $playlist['images'][0]['url'] ?? null,
+                        'tracks_total' => $playlist['tracks']['total'],
+                        'public' => $playlist['public'],
+                        'collaborative' => $playlist['collaborative'],
+                        'external_url' => $playlist['external_urls']['spotify'] ?? null,
+                        'owner' => $playlist['owner']['display_name'] ?? 'Unknown',
+                    ];
+                })->toArray();
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            Log::error('Spotify user playlists failed', ['error' => $e->getMessage()]);
+            return $this->getMockPlaylists();
+        }
+    }
+
+    /**
+     * Get playlist tracks
+     */
+    public function getPlaylistTracks($user, $playlistId, $limit = 50)
+    {
+        if ($this->mockMode || !$user->hasSpotifyConnection()) {
+            return $this->getMockTracks('', $limit);
+        }
+
+        try {
+            $accessToken = $this->getUserAccessToken($user);
+            
+            $response = Http::withToken($accessToken)
+                          ->get("https://api.spotify.com/v1/playlists/{$playlistId}/tracks", [
+                              'limit' => $limit,
+                              'fields' => 'items(track(id,name,artists,album,duration_ms,external_urls,preview_url))'
+                          ]);
+
+            if ($response->successful()) {
+                $items = $response->json()['items'];
+                
+                return collect($items)->map(function ($item) {
+                    $track = $item['track'];
+                    return [
+                        'id' => $track['id'],
+                        'name' => $track['name'],
+                        'artist' => $track['artists'][0]['name'] ?? 'Unknown Artist',
+                        'album' => $track['album']['name'] ?? 'Unknown Album',
+                        'image' => $track['album']['images'][0]['url'] ?? null,
+                        'preview_url' => $track['preview_url'],
+                        'external_url' => $track['external_urls']['spotify'] ?? null,
+                        'duration_ms' => $track['duration_ms'],
+                    ];
+                })->toArray();
+            }
+
+            return [];
+        } catch (\Exception $e) {
+            Log::error('Spotify playlist tracks failed', ['error' => $e->getMessage()]);
+            return $this->getMockTracks('', $limit);
+        }
+    }
+
+    /**
+     * Start/Resume playback on user's active device
+     */
+    public function startPlayback($user, $options = [])
+    {
+        if ($this->mockMode || !$user->hasSpotifyConnection()) {
+            return ['success' => true, 'mock' => true];
+        }
+
+        try {
+            $accessToken = $this->getUserAccessToken($user);
+            
+            $response = Http::withToken($accessToken)
+                          ->put('https://api.spotify.com/v1/me/player/play', $options);
+
+            return [
+                'success' => $response->successful(),
+                'status_code' => $response->status(),
+                'error' => $response->successful() ? null : $response->body()
+            ];
+        } catch (\Exception $e) {
+            Log::error('Spotify start playback failed', ['error' => $e->getMessage()]);
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Pause playback on user's active device
+     */
+    public function pausePlayback($user)
+    {
+        if ($this->mockMode || !$user->hasSpotifyConnection()) {
+            return ['success' => true, 'mock' => true];
+        }
+
+        try {
+            $accessToken = $this->getUserAccessToken($user);
+            
+            $response = Http::withToken($accessToken)
+                          ->put('https://api.spotify.com/v1/me/player/pause');
+
+            return [
+                'success' => $response->successful(),
+                'status_code' => $response->status(),
+                'error' => $response->successful() ? null : $response->body()
+            ];
+        } catch (\Exception $e) {
+            Log::error('Spotify pause playback failed', ['error' => $e->getMessage()]);
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Skip to next track
+     */
+    public function nextTrack($user)
+    {
+        if ($this->mockMode || !$user->hasSpotifyConnection()) {
+            return ['success' => true, 'mock' => true];
+        }
+
+        try {
+            $accessToken = $this->getUserAccessToken($user);
+            
+            $response = Http::withToken($accessToken)
+                          ->post('https://api.spotify.com/v1/me/player/next');
+
+            return [
+                'success' => $response->successful(),
+                'status_code' => $response->status(),
+                'error' => $response->successful() ? null : $response->body()
+            ];
+        } catch (\Exception $e) {
+            Log::error('Spotify next track failed', ['error' => $e->getMessage()]);
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Skip to previous track
+     */
+    public function previousTrack($user)
+    {
+        if ($this->mockMode || !$user->hasSpotifyConnection()) {
+            return ['success' => true, 'mock' => true];
+        }
+
+        try {
+            $accessToken = $this->getUserAccessToken($user);
+            
+            $response = Http::withToken($accessToken)
+                          ->post('https://api.spotify.com/v1/me/player/previous');
+
+            return [
+                'success' => $response->successful(),
+                'status_code' => $response->status(),
+                'error' => $response->successful() ? null : $response->body()
+            ];
+        } catch (\Exception $e) {
+            Log::error('Spotify previous track failed', ['error' => $e->getMessage()]);
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Get current playback state
+     */
+    public function getCurrentPlayback($user)
+    {
+        if ($this->mockMode || !$user->hasSpotifyConnection()) {
+            return $this->getMockCurrentPlayback();
+        }
+
+        try {
+            $accessToken = $this->getUserAccessToken($user);
+            
+            $response = Http::withToken($accessToken)
+                          ->get('https://api.spotify.com/v1/me/player');
+
+            if ($response->successful() && $response->body() !== '') {
+                $data = $response->json();
+                $track = $data['item'] ?? null;
+                
+                return [
+                    'is_playing' => $data['is_playing'] ?? false,
+                    'progress_ms' => $data['progress_ms'] ?? 0,
+                    'device' => $data['device']['name'] ?? null,
+                    'shuffle_state' => $data['shuffle_state'] ?? false,
+                    'repeat_state' => $data['repeat_state'] ?? 'off',
+                    'track' => $track ? [
+                        'id' => $track['id'],
+                        'name' => $track['name'],
+                        'artist' => $track['artists'][0]['name'] ?? 'Unknown Artist',
+                        'album' => $track['album']['name'] ?? 'Unknown Album',
+                        'image' => $track['album']['images'][0]['url'] ?? null,
+                        'duration_ms' => $track['duration_ms'],
+                        'external_url' => $track['external_urls']['spotify'] ?? null,
+                    ] : null
+                ];
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            Log::error('Spotify get current playback failed', ['error' => $e->getMessage()]);
+            return $this->getMockCurrentPlayback();
+        }
+    }
+
+    /**
+     * Mock playlists for development
+     */
+    protected function getMockPlaylists()
+    {
+        return [
+            [
+                'id' => 'mock_playlist_001',
+                'name' => 'Our Love Songs',
+                'description' => 'Perfect soundtrack for our memories together',
+                'image' => 'https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96',
+                'tracks_total' => 25,
+                'public' => false,
+                'collaborative' => false,
+                'external_url' => 'https://open.spotify.com/playlist/mock_playlist_001',
+                'owner' => 'You',
+            ],
+            [
+                'id' => 'mock_playlist_002',
+                'name' => 'Memories Soundtrack',
+                'description' => 'Songs that remind us of special moments',
+                'image' => 'https://i.scdn.co/image/ab67616d0000b273d5ac8cdb4f7c5f8c5f7b8c1e',
+                'tracks_total' => 18,
+                'public' => false,
+                'collaborative' => true,
+                'external_url' => 'https://open.spotify.com/playlist/mock_playlist_002',
+                'owner' => 'Both of us',
+            ]
+        ];
+    }
+
+    /**
+     * Mock current playback for development
+     */
+    protected function getMockCurrentPlayback()
+    {
+        return [
+            'is_playing' => true,
+            'progress_ms' => 135000, // 2:15
+            'device' => 'Khairun Web Player',
+            'shuffle_state' => false,
+            'repeat_state' => 'off',
+            'track' => [
+                'id' => 'mock_001',
+                'name' => 'Perfect',
+                'artist' => 'Ed Sheeran',
+                'album' => '÷ (Divide)',
+                'image' => 'https://i.scdn.co/image/ab67616d0000b273ba5db46f4b838ef6027e6f96',
+                'duration_ms' => 263400,
+                'external_url' => 'https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v',
+            ]
+        ];
+    }
+
+    /**
+     * Get user's access token with automatic refresh
+     */
+    protected function getUserAccessToken($user)
+    {
+        if (!$user->hasSpotifyConnection()) {
+            throw new \Exception('User does not have valid Spotify connection');
+        }
+
+        // Check if token needs refresh
+        if ($user->needsSpotifyTokenRefresh()) {
+            $this->refreshUserToken($user);
+        }
+
+        return $user->spotify_access_token;
+    }
+
+    /**
+     * Refresh user's access token
+     */
+    protected function refreshUserToken($user)
+    {
+        if (!$user->spotify_refresh_token) {
+            throw new \Exception('No refresh token available for user');
+        }
+
+        $response = Http::asForm()->post($this->accountsUrl . '/token', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $user->spotify_refresh_token,
+            'client_id' => $this->clientId,
+            'client_secret' => $this->clientSecret,
+        ]);
+
+        if (!$response->successful()) {
+            throw new \Exception('Failed to refresh user token: ' . $response->body());
+        }
+
+        $tokenData = $response->json();
+
+        $user->update([
+            'spotify_access_token' => $tokenData['access_token'],
+            'spotify_token_expires_at' => now()->addSeconds($tokenData['expires_in'] - 60),
+        ]);
+
+        // Update refresh token if provided
+        if (isset($tokenData['refresh_token'])) {
+            $user->update(['spotify_refresh_token' => $tokenData['refresh_token']]);
+        }
+
+        return $tokenData['access_token'];
+    }
+
     // Sisa method tetap sama...
     protected function getAccessToken()
     {

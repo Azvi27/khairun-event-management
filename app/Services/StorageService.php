@@ -62,7 +62,8 @@ class StorageService
 
         try {
             if ($this->isLocal) {
-                return Storage::disk('public')->url($path);
+                // Gunakan asset() untuk local storage dengan storage link
+                return asset('storage/' . $path);
             } else {
                 return Storage::disk('r2')->url($path);
             }

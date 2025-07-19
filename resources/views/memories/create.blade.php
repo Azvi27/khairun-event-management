@@ -24,6 +24,10 @@
         grid-template-columns: 1fr 1fr;
         gap: 2vh 2vw;
         margin-top: 2vh;
+        background: rgba(30, 32, 45, 0.8);
+        border-radius: 20px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .form-group {
