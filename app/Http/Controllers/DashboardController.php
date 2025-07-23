@@ -12,6 +12,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        
+        // ✅ EXISTING CODE - TIDAK DIUBAH SAMA SEKALI
         // Get recent memories for gallery
         $memories = Memory::where('user_id', auth()->id())
                          ->orderBy('memory_date', 'desc')
@@ -65,6 +68,33 @@ class DashboardController extends Controller
             'startDayOfWeek' => $currentMonth->copy()->startOfMonth()->dayOfWeek,
         ];
         
-        return view('dashboard', compact('memories', 'nextSurprise', 'upcomingEvents', 'monthlyEvents', 'calendarData'));
+        // ➕ NEW: Statistics calculation with safe fallback
+        $stats = [];
+        try {
+            $stats = [
+                'total_memories' => Memory::where('user_id', $user->id)->count(),
+                'memories_this_month' => Memory::where('user_id', $user->id)
+                    ->whereMonth('created_at', now()->month)
+                    ->whereYear('created_at', now()->year)
+                    ->count(),
+                'upcoming_events' => Event::whereHas('users', function($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })->where('start_date', '>', now())->count(),
+                'pending_surprises' => BirthdaySurprise::where('receiver_user_id', $user->id)
+                    ->where('is_revealed', false)
+                    ->where('reveal_at', '>', now())
+                    ->count(),
+                'days_together' => $user->created_at->diffInDays(now()),
+                'memories_with_music' => Memory::where('user_id', $user->id)
+                    ->whereNotNull('spotify_track_id')
+                    ->count(),
+            ];
+        } catch (\Exception $e) {
+            // ✅ SAFE FALLBACK - Dashboard tetap berfungsi tanpa stats
+            \Log::warning('Dashboard stats calculation failed', ['error' => $e->getMessage()]);
+            $stats = null;
+        }
+        
+        return view('dashboard', compact('memories', 'nextSurprise', 'upcomingEvents', 'monthlyEvents', 'calendarData', 'stats'));
     }
 } 

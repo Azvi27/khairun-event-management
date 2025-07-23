@@ -114,6 +114,45 @@ class Kernel extends ConsoleKernel
         ->everyTenMinutes()
         ->name('queue-monitoring')
         ->description('Monitor queue health and performance');
+
+        // Birthday surprise automation - setiap hari jam 9 pagi
+        $schedule->command('surprises:reveal')
+                 ->dailyAt('09:00')
+                 ->withoutOverlapping()
+                 ->runInBackground();
+        
+        // Health check - setiap 5 menit
+        $schedule->command('system:health-check')
+                 ->everyFiveMinutes()
+                 ->withoutOverlapping()
+                 ->runInBackground();
+        
+        // Clear expired OTP codes - setiap jam
+        $schedule->call(function () {
+            \App\Models\User::where('otp_expires_at', '<', now())
+                            ->update([
+                                'otp_code' => null,
+                                'otp_expires_at' => null
+                            ]);
+        })->hourly();
+        
+        // Clear old logs - setiap minggu
+        $schedule->command('log:clear --days=14')
+                 ->weekly()
+                 ->sundays()
+                 ->at('02:00');
+        
+        // Database backup - setiap hari jam 2 pagi (jika backup enabled)
+        if (config('production.backup.enabled')) {
+            $schedule->command('backup:run --only-db')
+                     ->daily()
+                     ->at('02:00')
+                     ->withoutOverlapping();
+        }
+        
+        // Queue cleanup - setiap jam
+        $schedule->command('queue:prune-batches --hours=48')
+                 ->hourly();
     }
 
     /**

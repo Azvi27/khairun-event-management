@@ -124,6 +124,44 @@ Route::get('/otp-demo', function () {
 
 // Hanya untuk development
 if (config('app.env') === 'local') {
+    
+    // 📧 TEST EMAIL NOTIFICATIONS
+    Route::get('/test-email-notification', function () {
+        // Find a sample surprise to test with
+        $surprise = \App\Models\BirthdaySurprise::with(['sender', 'receiver'])->first();
+        
+        if (!$surprise) {
+            return response()->json([
+                'error' => 'No birthday surprises found. Create one first!',
+                'suggestion' => 'Create a surprise at /birthday-surprises/create'
+            ]);
+        }
+        
+        try {
+            // Test dispatch email job
+            \App\Jobs\SendSurpriseNotification::dispatch($surprise);
+            
+            // Also test the mailable directly
+            $mailable = new \App\Mail\SurpriseRevealedMail($surprise);
+            \Illuminate\Support\Facades\Mail::send($mailable);
+            
+            return response()->json([
+                'success' => 'Email notification test completed!',
+                'surprise_id' => $surprise->id,
+                'receiver' => $surprise->receiver->name,
+                'sender' => $surprise->sender->name,
+                'mail_driver' => config('mail.default'),
+                'note' => 'Check storage/logs/laravel.log for email content (log driver)'
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Email test failed: ' . $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+    })->middleware('auth')->name('test.email');
+
     Route::get('/test-spotify', function () {
         // 1. BUAT INSTANCE SpotifyService
         $spotifyService = new \App\Services\SpotifyService();
@@ -167,3 +205,82 @@ if (config('app.env') === 'local') {
 Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
+
+// ========================================
+// 🏥 PRODUCTION HEALTH CHECK ENDPOINTS
+// ========================================
+
+// Health check endpoint untuk production monitoring
+Route::get('/health', function () {
+    if (!config('production.monitoring.health_check_enabled', true)) {
+        abort(404);
+    }
+    
+    $result = [];
+    $healthy = true;
+    
+    // Database check
+    try {
+        \DB::connection()->getPdo();
+        \App\Models\User::count(); // Test actual query
+        $result['database'] = 'healthy';
+    } catch (\Exception $e) {
+        $result['database'] = 'failed';
+        $healthy = false;
+    }
+    
+    // Storage check  
+    try {
+        \Storage::disk()->exists('test') || \Storage::disk()->put('health-check.txt', 'test');
+        \Storage::disk()->delete('health-check.txt');
+        $result['storage'] = 'healthy';
+    } catch (\Exception $e) {
+        $result['storage'] = 'failed';
+        $healthy = false;
+    }
+    
+    // Cache check
+    try {
+        \Cache::put('health-check', 'test', 60);
+        $value = \Cache::get('health-check');
+        \Cache::forget('health-check');
+        $result['cache'] = $value === 'test' ? 'healthy' : 'failed';
+    } catch (\Exception $e) {
+        $result['cache'] = 'failed';
+        $healthy = false;
+    }
+    
+    // Application stats
+    $result['stats'] = [
+        'users_count' => \App\Models\User::count(),
+        'memories_count' => \App\Models\Memory::count(),
+        'uptime' => 'active',
+    ];
+    
+    $result['status'] = $healthy ? 'healthy' : 'failed';
+    $result['timestamp'] = now()->toISOString();
+    $result['version'] = config('app.version', '1.0.0');
+    $result['environment'] = app()->environment();
+    
+    return response()->json($result, $healthy ? 200 : 503);
+})->name('health-check');
+
+// Status endpoint (simplified)
+Route::get('/status', function () {
+    return response()->json([
+        'status' => 'online',
+        'environment' => app()->environment(),
+        'maintenance' => app()->isDownForMaintenance(),
+        'timestamp' => now()->toISOString(),
+        'version' => config('app.version', '1.0.0'),
+    ]);
+})->name('status');
+
+// API status untuk monitoring tools
+Route::get('/api/health', function () {
+    return response()->json([
+        'ok' => true,
+        'service' => 'khairun',
+        'timestamp' => now()->timestamp
+    ]);
+})->name('api.health');

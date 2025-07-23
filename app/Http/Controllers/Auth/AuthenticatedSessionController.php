@@ -45,6 +45,7 @@ class AuthenticatedSessionController extends Controller
         try {
             Mail::to($user->email)->send(new OTPMail($user, $otp));
         } catch (\Exception $e) {
+            // Kembalikan ke pesan error normal
             return back()->withErrors([
                 'email' => 'Gagal mengirim email OTP. Silakan coba lagi.',
             ])->onlyInput('email');
@@ -62,90 +63,75 @@ class AuthenticatedSessionController extends Controller
      */
     public function showOTPForm(): View
     {
-        // Check if user has valid session
+        // Check if user session exists
         if (!session('otp_user_id')) {
-            return redirect()->route('login')->withErrors(['email' => 'Sesi expired. Silakan login ulang.']);
+            return redirect()->route('login')->withErrors(['email' => 'Session expired. Please login again.']);
         }
 
         return view('auth.verify-otp');
     }
 
     /**
-     * Handle OTP verification
+     * Verify OTP and login user
      */
     public function verifyOTP(Request $request): RedirectResponse
     {
-        // DEBUG: Log untuk debugging
-        \Log::info('OTP Verification Debug', [
-            'input_otp' => $request->otp,
-            'user_id' => session('otp_user_id'),
-            'all_input' => $request->all()
-        ]);
-
-        // 1. VALIDATE OTP INPUT
         $request->validate([
-            'otp' => 'required|digits:6',
+            'otp_code' => 'required|digits:6',
         ]);
 
-        // 2. GET USER FROM SESSION
+        // Get user from session
         $userId = session('otp_user_id');
         if (!$userId) {
-            return redirect()->route('login')->withErrors(['email' => 'Sesi expired. Silakan login ulang.']);
+            return redirect()->route('login')->withErrors(['email' => 'Session expired. Please login again.']);
         }
 
         $user = User::find($userId);
         if (!$user) {
-            return redirect()->route('login')->withErrors(['email' => 'User tidak ditemukan.']);
+            return redirect()->route('login')->withErrors(['email' => 'User not found.']);
         }
 
-        // 3. VERIFY OTP
-        if (!$user->verifyOTP($request->otp)) {
+        // Verify OTP
+        if (!$user->verifyOTP($request->otp_code)) {
             return back()->withErrors([
-                'otp' => 'Kode OTP salah atau sudah expired.',
+                'otp_code' => $user->isOTPExpired() ? 'Kode OTP telah kedaluwarsa.' : 'Kode OTP salah.',
             ]);
         }
 
-        // 4. OTP VALID - LOGIN USER
-        Auth::login($user);
-        $user->clearOTP(); // Clear OTP setelah berhasil login
-
-        // 5. CLEAR SESSION & REGENERATE
+        // Clear OTP and login
+        $user->clearOTP();
         $request->session()->forget('otp_user_id');
+        
+        Auth::login($user);
         $request->session()->regenerate();
 
-        // 6. REDIRECT TO DASHBOARD WITH PROPER SESSION HANDLING
-        $request->session()->regenerate();
-                
-        return redirect()->route('dashboard')->with([
-            'success' => 'Login berhasil! Selamat datang di Our Memories.',
-            'first_login' => true
-        ]);
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
-     * Resend OTP email
+     * Resend OTP
      */
     public function resendOTP(Request $request): RedirectResponse
     {
         $userId = session('otp_user_id');
         if (!$userId) {
-            return redirect()->route('login')->withErrors(['email' => 'Sesi expired. Silakan login ulang.']);
+            return redirect()->route('login')->withErrors(['email' => 'Session expired. Please login again.']);
         }
 
         $user = User::find($userId);
         if (!$user) {
-            return redirect()->route('login')->withErrors(['email' => 'User tidak ditemukan.']);
+            return redirect()->route('login')->withErrors(['email' => 'User not found.']);
         }
 
         // Generate new OTP
         $otp = $user->generateOTP();
 
-        // Send email
+        // Send OTP email
         try {
             Mail::to($user->email)->send(new OTPMail($user, $otp));
             return back()->with('status', 'Kode OTP baru telah dikirim ke email Anda.');
         } catch (\Exception $e) {
-            return back()->withErrors(['otp' => 'Gagal mengirim email OTP. Silakan coba lagi.']);
+            return back()->withErrors(['otp_code' => 'Gagal mengirim email OTP. Silakan coba lagi.']);
         }
     }
 

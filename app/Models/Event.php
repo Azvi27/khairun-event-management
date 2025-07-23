@@ -13,6 +13,7 @@ class Event extends Model
     protected $fillable = [
         'created_by',  // ← CHANGE: dari 'user_id' ke 'created_by'
         'title',
+        'description',
         'start_date',
         'end_date', 
         'type',

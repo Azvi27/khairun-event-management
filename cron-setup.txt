@@ -1,0 +1,17 @@
+# =================================
+# CRON SETUP UNTUK CPANEL HOSTING
+# =================================
+
+# Tambahkan di cPanel Cron Jobs:
+# Run every minute untuk Laravel scheduler
+
+* * * * * cd /home/[username]/public_html && php artisan schedule:run >> /dev/null 2>&1
+
+# Ganti [username] dengan username cPanel Anda
+# Ganti path sesuai dengan lokasi instalasi Laravel
+
+# Contoh jika Laravel di subfolder:
+* * * * * cd /home/[username]/public_html/khairun && php artisan schedule:run >> /dev/null 2>&1
+
+# Alternative jika php tidak di PATH:
+* * * * * /usr/local/bin/php /home/[username]/public_html/artisan schedule:run >> /dev/null 2>&1

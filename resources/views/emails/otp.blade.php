@@ -1,113 +1,75 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kode OTP Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kode OTP - Khairun</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .email-container {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
             text-align: center;
-            margin-bottom: 30px;
         }
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #3b82f6;
-            margin-bottom: 10px;
+        .content {
+            padding: 40px 30px;
+            text-align: center;
         }
         .otp-code {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
-            text-align: center;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 25px 0;
-            letter-spacing: 5px;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
-        .warning {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            padding: 15px;
-            border-radius: 8px;
+            color: #667eea;
+            letter-spacing: 8px;
             margin: 20px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
         }
         .footer {
+            background: #f8fafc;
+            padding: 20px;
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-            color: #6b7280;
             font-size: 14px;
-        }
-        .btn-primary {
-            background: #3b82f6;
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 8px;
-            display: inline-block;
-            margin: 10px 0;
+            color: #6b7280;
         }
     </style>
 </head>
 <body>
-    <div class="email-container">
-        <!-- Header -->
+    <div class="container">
         <div class="header">
-            <div class="logo">💝 Website Khairun</div>
-            <h2>Kode Verifikasi Login</h2>
+            <h1>🔐 Kode Verifikasi OTP</h1>
+            <p>Khairun - Our Memories</p>
         </div>
-
-        <!-- Greeting -->
-        <p>Halo <strong>{{ $userName }}</strong>! 👋</p>
         
-        <p>Kami menerima permintaan login ke akun Website Khairun Anda. Untuk melanjutkan, silakan gunakan kode OTP berikut:</p>
-
-        <!-- OTP Code -->
-        <div class="otp-code">
-            {{ $otpCode }}
+        <div class="content">
+            <p>Halo <strong>{{ $user->name }}</strong>,</p>
+            <p>Gunakan kode OTP berikut untuk login ke akun Anda:</p>
+            
+            <div class="otp-code">{{ $otp }}</div>
+            
+            <p><strong>⏰ Kode berlaku selama 10 menit</strong></p>
+            <p>Jika Anda tidak mencoba login, abaikan email ini.</p>
         </div>
-
-        <!-- Instructions -->
-        <p><strong>Cara menggunakan:</strong></p>
-        <ol>
-            <li>Kembali ke halaman login Website Khairun</li>
-            <li>Masukkan kode OTP di atas</li>
-            <li>Klik "Verifikasi" untuk melanjutkan</li>
-        </ol>
-
-        <!-- Warning -->
-        <div class="warning">
-            <strong>⚠️ Penting:</strong>
-            <ul>
-                <li>Kode ini <strong>berlaku selama 10 menit</strong></li>
-                <li>Jangan bagikan kode ini kepada siapa pun</li>
-                <li>Jika Anda tidak melakukan login, abaikan email ini</li>
-            </ul>
-        </div>
-
-        <!-- Footer -->
+        
         <div class="footer">
-            <p>Email ini dikirim secara otomatis dari sistem Website Khairun.</p>
-            <p>💝 <em>Untuk kenangan indah yang tak terlupakan</em></p>
+            <p>💝 Email ini dikirim otomatis dari sistem Khairun</p>
+            <p>Demi keamanan, jangan bagikan kode ini kepada siapapun</p>
         </div>
     </div>
 </body>

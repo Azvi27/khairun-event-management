@@ -6,6 +6,7 @@ use App\Models\BirthdaySurprise;
 use Illuminate\Http\Request;
 use App\Models\User;  // ← TAMBAH BARIS INI
 use Illuminate\Support\Facades\Log;
+use App\Jobs\SendSurpriseNotification;
 
 class BirthdaySurpriseController extends Controller
 {
@@ -181,6 +182,21 @@ class BirthdaySurpriseController extends Controller
             // Update status revealed (untuk receiver yang membuka surprise)
             if (!$birthdaySurprise->is_revealed) {
                 $birthdaySurprise->update(['is_revealed' => true]);
+                
+                // 📧 DISPATCH EMAIL NOTIFICATION (Safe background job)
+                try {
+                    SendSurpriseNotification::dispatch($birthdaySurprise);
+                    Log::info("Email notification job dispatched", [
+                        'surprise_id' => $birthdaySurprise->id,
+                        'receiver_id' => $birthdaySurprise->receiver_user_id
+                    ]);
+                } catch (\Exception $e) {
+                    // Don't break the UI if email job fails
+                    Log::error("Failed to dispatch email notification job", [
+                        'surprise_id' => $birthdaySurprise->id,
+                        'error' => $e->getMessage()
+                    ]);
+                }
             }
         }
 

@@ -1,0 +1,4 @@
+# Khairun Scheduled Tasks
+* * * * * www-data cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
+0 2 * * * www-data cd /var/www/html && php artisan surprises:reveal >> /var/log/surprises.log 2>&1
+0 3 * * * www-data cd /var/www/html && php artisan system:health-check >> /var/log/health-check.log 2>&1

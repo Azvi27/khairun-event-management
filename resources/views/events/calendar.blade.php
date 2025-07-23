@@ -426,6 +426,436 @@
         font-weight: 500;
         margin-left: 8px;
     }
+
+    /* 🚀 ENHANCED CALENDAR STYLES */
+    
+    /* Calendar Header Enhancement */
+    .calendar-header-enhanced {
+        background: linear-gradient(135deg, #181A26 0%, #262840 100%);
+        border-radius: 1.5rem;
+        padding: 1.5rem 2rem;
+        margin-bottom: 2rem;
+        border: 2px solid rgba(140, 224, 255, 0.1);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 4px 15px rgba(140, 224, 255, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    /* View Mode Switcher */
+    .view-mode-switcher {
+        display: flex;
+        gap: 0.5rem;
+        background: rgba(52, 54, 70, 0.8);
+        padding: 0.5rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(140, 224, 255, 0.2);
+    }
+
+    .view-mode-btn {
+        background: transparent;
+        border: none;
+        color: #D3D3D9;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 0.3px;
+    }
+
+    .view-mode-btn:hover {
+        background: rgba(140, 224, 255, 0.1);
+        color: #8CE0FF;
+        transform: translateY(-1px);
+    }
+
+    .view-mode-btn.active {
+        background: linear-gradient(135deg, #8CE0FF 0%, #6bd4ff 100%);
+        color: #181A26;
+        box-shadow: 0 4px 12px rgba(140, 224, 255, 0.3);
+        font-weight: 700;
+    }
+
+    /* Calendar Actions */
+    .calendar-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .action-btn {
+        background: linear-gradient(135deg, #262840 0%, #343646 100%);
+        border: 2px solid rgba(140, 224, 255, 0.2);
+        color: #8CE0FF;
+        padding: 0.75rem 1.5rem;
+        border-radius: 1rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .action-btn:hover {
+        background: linear-gradient(135deg, #8CE0FF 0%, #6bd4ff 100%);
+        color: #181A26;
+        border-color: #8CE0FF;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(140, 224, 255, 0.3);
+    }
+
+    /* Enhanced Event Color Coding */
+    .event-type-general {
+        background-color: #8CE0FF !important;
+        border-color: #6bd4ff !important;
+    }
+    
+    .event-type-cycle {
+        background-color: #FF6B6B !important;
+        border-color: #ff5252 !important;
+    }
+    
+    .event-type-birthday {
+        background-color: #FFD93D !important;
+        border-color: #ffc107 !important;
+    }
+
+    /* Enhanced Calendar Date with Multiple Events */
+    .calendar-date.has-event {
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .calendar-date.has-event::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 8px;
+        height: 8px;
+        background: #8CE0FF;
+        border-radius: 50%;
+        box-shadow: 0 0 8px rgba(140, 224, 255, 0.6);
+        animation: eventPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes eventPulse {
+        0%, 100% { 
+            opacity: 0.7; 
+            transform: scale(1); 
+        }
+        50% { 
+            opacity: 1; 
+            transform: scale(1.2); 
+        }
+    }
+
+    /* Event Indicators for Multiple Events */
+    .calendar-date .event-indicators {
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 1px;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 90%;
+    }
+
+    .event-indicator {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #8CE0FF;
+    }
+
+    .event-indicator.type-cycle {
+        background: #FF6B6B;
+    }
+
+    .event-indicator.type-birthday {
+        background: #FFD93D;
+    }
+
+    .event-indicator.type-event {
+        background: #8CE0FF;
+    }
+
+    /* Hover Effects & Tooltips */
+    .calendar-date:hover {
+        background: linear-gradient(135deg, rgba(140, 224, 255, 0.15) 0%, rgba(140, 224, 255, 0.05) 100%);
+        border-color: rgba(140, 224, 255, 0.4);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(140, 224, 255, 0.2);
+        z-index: 5;
+    }
+
+    /* Event Tooltip */
+    .event-tooltip {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-100%);
+        background: linear-gradient(135deg, #262840 0%, #343646 100%);
+        border: 2px solid rgba(140, 224, 255, 0.3);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        min-width: 200px;
+        max-width: 300px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .calendar-date:hover .event-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-100%) translateY(-5px);
+    }
+
+    .tooltip-header {
+        color: #8CE0FF;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(140, 224, 255, 0.2);
+        padding-bottom: 0.5rem;
+    }
+
+    .tooltip-event {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.3rem 0;
+        color: #D3D3D9;
+        font-size: 0.8rem;
+    }
+
+    .tooltip-event-type {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .tooltip-event-title {
+        flex: 1;
+    }
+
+    .tooltip-event-time {
+        color: #8CE0FF;
+        font-size: 0.7rem;
+    }
+
+    .event-indicator-more {
+        background: rgba(140, 224, 255, 0.7);
+        color: #181A26;
+        font-size: 0.6rem;
+        font-weight: 600;
+        padding: 1px 3px;
+        border-radius: 2px;
+        min-width: 12px;
+        text-align: center;
+    }
+
+    .tooltip-more {
+        color: #8CE0FF;
+        font-size: 0.7rem;
+        font-style: italic;
+        text-align: center;
+        padding: 0.3rem 0;
+        border-top: 1px solid rgba(140, 224, 255, 0.2);
+        margin-top: 0.3rem;
+    }
+
+    /* Calendar Day Number Styling */
+    .calendar-day-number {
+        font-weight: 600;
+        font-size: 1rem;
+        z-index: 2;
+        position: relative;
+    }
+
+    /* Quick Add Modal */
+    .quick-add-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .quick-add-modal.show {
+        display: flex;
+        opacity: 1;
+    }
+
+    .quick-add-content {
+        background: linear-gradient(135deg, #181A26 0%, #262840 100%);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        border: 2px solid rgba(140, 224, 255, 0.2);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+    }
+
+    .quick-add-modal.show .quick-add-content {
+        transform: scale(1);
+    }
+
+    .quick-add-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(140, 224, 255, 0.2);
+    }
+
+    .quick-add-title {
+        color: #8CE0FF;
+        font-size: 1.2rem;
+        font-weight: 600;
+        font-family: 'DM Serif Text', serif;
+    }
+
+    .quick-add-close {
+        background: rgba(255, 107, 107, 0.2);
+        border: 1px solid rgba(255, 107, 107, 0.3);
+        color: #FF6B6B;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .quick-add-close:hover {
+        background: rgba(255, 107, 107, 0.3);
+        transform: scale(1.1);
+    }
+
+    /* Week & Day View Containers */
+    .week-view-container,
+    .day-view-container {
+        display: none;
+        background: linear-gradient(135deg, #181A26 0%, #262840 100%);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        border: 2px solid rgba(140, 224, 255, 0.1);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .week-view-container.active,
+    .day-view-container.active {
+        display: block;
+    }
+
+    .view-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(140, 224, 255, 0.2);
+    }
+
+    .view-title {
+        color: #8CE0FF;
+        font-size: 1.5rem;
+        font-weight: 600;
+        font-family: 'DM Serif Text', serif;
+    }
+
+    .view-navigation {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .view-nav-btn {
+        background: rgba(140, 224, 255, 0.1);
+        border: 1px solid rgba(140, 224, 255, 0.3);
+        color: #8CE0FF;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .view-nav-btn:hover {
+        background: rgba(140, 224, 255, 0.2);
+        transform: scale(1.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .calendar-header-enhanced {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .view-mode-switcher {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .calendar-actions {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .view-mode-btn,
+        .action-btn {
+            flex: 1;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .quick-add-content {
+            width: 95%;
+            padding: 1.5rem;
+            max-height: 90vh;
+        }
+
+        .event-tooltip {
+            min-width: 180px;
+            max-width: 250px;
+        }
+    }
 </style>
 @endpush
 
@@ -526,11 +956,35 @@
 @section('content')
 <div class="content-area">
     <h1 class="page-title">Calendar</h1>
+    
+    <!-- 🚀 NEW: Enhanced Calendar Header with View Modes -->
+    <div class="calendar-header-enhanced">
+        <div class="view-mode-switcher">
+            <button class="view-mode-btn active" data-view="month" onclick="switchCalendarView('month')">
+                📅 Month
+            </button>
+            <button class="view-mode-btn" data-view="week" onclick="switchCalendarView('week')">
+                📊 Week  
+            </button>
+            <button class="view-mode-btn" data-view="day" onclick="switchCalendarView('day')">
+                📋 Day
+            </button>
+        </div>
+        
+        <div class="calendar-actions">
+            <button class="action-btn" onclick="goToToday()" title="Go to Today">
+                🎯 Today
+            </button>
+            <button class="action-btn" onclick="toggleEventForm()" title="Quick Add Event">
+                ➕ Quick Add
+            </button>
+        </div>
+    </div>
 
     <!-- Calendar and Event Layout -->
     <div class="calendar-layout">
         <!-- Calendar Section -->
-        <section class="content-section calendar-section">
+        <section class="content-section calendar-section" id="monthViewContainer">
             <div class="calendar-nav">
                 <button class="nav-btn" id="prevMonth">‹</button>
                 
@@ -598,8 +1052,46 @@
                         {{ $isToday ? 'today' : '' }}
                         {{ $dayEvents->count() > 0 ? 'has-event' : '' }}"
                         data-date="{{ $dateString }}"
-                        title="{{ $dayEvents->count() > 0 ? $dayEvents->pluck('title')->join(', ') : '' }}">
-                                    {{ $currentDate->day }}
+                        onclick="selectCalendarDate('{{ $dateString }}')">
+                        
+                        <!-- Day Number -->
+                        <span class="calendar-day-number">{{ $currentDate->day }}</span>
+                        
+                        <!-- Event Indicators -->
+                        @if($dayEvents->count() > 0)
+                            <div class="event-indicators">
+                                @foreach($dayEvents->take(3) as $event)
+                                    <div class="event-indicator type-{{ $event->type }}" 
+                                         title="{{ $event->title }}"></div>
+                                @endforeach
+                                @if($dayEvents->count() > 3)
+                                    <div class="event-indicator-more">+{{ $dayEvents->count() - 3 }}</div>
+                                @endif
+                            </div>
+                            
+                            <!-- Event Tooltip -->
+                            <div class="event-tooltip">
+                                <div class="tooltip-header">
+                                    📅 {{ $currentDate->format('d M Y') }} ({{ $dayEvents->count() }} events)
+                                </div>
+                                @foreach($dayEvents->take(5) as $event)
+                                    <div class="tooltip-event">
+                                        <div class="tooltip-event-type type-{{ $event->type }}"></div>
+                                        <div class="tooltip-event-title">
+                                            {{ $event->getTypeIcon() }} {{ Str::limit($event->title, 20) }}
+                                        </div>
+                                        <div class="tooltip-event-time">
+                                            {{ $event->start_date->format('H:i') }}
+                                        </div>
+                                    </div>
+                                @endforeach
+                                @if($dayEvents->count() > 5)
+                                    <div class="tooltip-more">
+                                        ... and {{ $dayEvents->count() - 5 }} more events
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
                             </div>
                             
                             @php
@@ -613,6 +1105,48 @@
                 <button class="quick-nav-btn" onclick="goToMonth(-1)">Bulan Lalu</button>
                 <button class="quick-nav-btn" onclick="goToMonth(1)">Bulan Depan</button>
                         </div>
+        </section>
+        
+        <!-- 🚀 NEW: Week View Container -->
+        <section class="week-view-container" id="weekViewContainer">
+            <div class="view-header">
+                <h3 class="view-title">📊 Week View</h3>
+                <div class="view-navigation">
+                    <button class="view-nav-btn" onclick="navigateWeek(-1)">‹</button>
+                    <span id="currentWeek">Week of Jan 15-21, 2025</span>
+                    <button class="view-nav-btn" onclick="navigateWeek(1)">›</button>
+                </div>
+            </div>
+            
+            <div class="week-grid" id="weekGrid">
+                <!-- Week view will be populated by JavaScript -->
+                <div class="coming-soon">
+                    <p style="text-align: center; color: #8CE0FF; font-style: italic; padding: 2rem;">
+                        🚧 Week view coming soon! This will show a 7-day detailed view with hourly slots.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 🚀 NEW: Day View Container -->
+        <section class="day-view-container" id="dayViewContainer">
+            <div class="view-header">
+                <h3 class="view-title">📋 Day View</h3>
+                <div class="view-navigation">
+                    <button class="view-nav-btn" onclick="navigateDay(-1)">‹</button>
+                    <span id="currentDay">Today, January 15, 2025</span>
+                    <button class="view-nav-btn" onclick="navigateDay(1)">›</button>
+                </div>
+            </div>
+            
+            <div class="day-schedule" id="daySchedule">
+                <!-- Day view will be populated by JavaScript -->
+                <div class="coming-soon">
+                    <p style="text-align: center; color: #8CE0FF; font-style: italic; padding: 2rem;">
+                        🚧 Day view coming soon! This will show detailed hourly schedule for the selected day.
+                    </p>
+                </div>
+            </div>
         </section>
 
         <!-- Add Event Section -->
@@ -777,48 +1311,135 @@
             </div>
         @endif
     </section>
+    
+    <!-- 🚀 NEW: Quick Add Event Modal -->
+    <div class="quick-add-modal" id="quickAddModal">
+        <div class="quick-add-content">
+            <div class="quick-add-header">
+                <h3 class="quick-add-title">⚡ Quick Add Event</h3>
+                <button class="quick-add-close" onclick="closeQuickAdd()">✕</button>
+            </div>
+            
+            <form id="quickAddForm" action="{{ route('events.store') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <label class="form-label">📝 Event Title</label>
+                    <input type="text" name="title" class="form-input" 
+                           placeholder="Enter event title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">📅 Date & Time</label>
+                    <div class="form-row">
+                        <input type="date" name="start_date" class="form-input" 
+                               id="quickEventDate" required>
+                        <input type="time" name="start_time" class="form-input" 
+                               value="09:00" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">🏷️ Event Type</label>
+                    <select name="type" class="form-input" required>
+                        <option value="event">🎉 General Event</option>
+                        <option value="cycle">🔄 Cycle Tracking</option>
+                        <option value="birthday">🎂 Birthday</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">🎵 Background Music (Optional)</label>
+                    <input type="text" name="spotify_track_id" class="form-input" 
+                           placeholder="Spotify track ID (optional)">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">📝 Description (Optional)</label>
+                    <textarea name="description" class="form-input form-textarea" 
+                              placeholder="Brief description" rows="3"></textarea>
+                </div>
+                
+                <!-- Hidden field for sharing (default to current user) -->
+                <input type="hidden" name="shared_with[]" value="{{ auth()->id() }}">
+                
+                <div class="form-group" style="text-align: right; margin-top: 1.5rem;">
+                    <button type="button" class="nav-btn" onclick="closeQuickAdd()" 
+                            style="margin-right: 1rem; background: rgba(107, 114, 128, 0.2);">
+                        Cancel
+                    </button>
+                    <button type="submit" class="add-btn">
+                        ➕ Add Event
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
 
 @push('scripts')
 <script>
+// 🚀 ENHANCED CALENDAR JAVASCRIPT
+
+// Global state
+let currentView = 'month';
+let selectedDate = null;
+
 // Calendar JavaScript
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Enhanced Calendar initialized');
+    
+    // Initialize calendar
+    initializeCalendar();
+    initializeViewSwitching();
+    initializeQuickAdd();
+    initializeCalendarInteractions();
+});
+
+function initializeCalendar() {
     const monthSelect = document.getElementById('monthSelect');
     const yearSelect = document.getElementById('yearSelect');
-    const currentMonthYear = document.getElementById('currentMonthYear');
+    
+    if (!monthSelect || !yearSelect) return;
     
     // Set current month/year
     monthSelect.value = {{ $calendarData['month'] - 1 }};
     yearSelect.value = {{ $calendarData['year'] }};
     
     // Navigation handlers
-    document.getElementById('prevMonth').addEventListener('click', () => {
-        let month = parseInt(monthSelect.value);
-        let year = parseInt(yearSelect.value);
-        
-        if (month === 0) {
-            month = 11;
-            year--;
-        } else {
-            month--;
-        }
-        
-        navigateToMonth(year, month + 1);
-    });
+    const prevBtn = document.getElementById('prevMonth');
+    const nextBtn = document.getElementById('nextMonth');
     
-    document.getElementById('nextMonth').addEventListener('click', () => {
-        let month = parseInt(monthSelect.value);
-        let year = parseInt(yearSelect.value);
-        
-        if (month === 11) {
-            month = 0;
-            year++;
-        } else {
-            month++;
-        }
-        
-        navigateToMonth(year, month + 1);
-    });
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            let month = parseInt(monthSelect.value);
+            let year = parseInt(yearSelect.value);
+            
+            if (month === 0) {
+                month = 11;
+                year--;
+            } else {
+                month--;
+            }
+            
+            navigateToMonth(year, month + 1);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            let month = parseInt(monthSelect.value);
+            let year = parseInt(yearSelect.value);
+            
+            if (month === 11) {
+                month = 0;
+                year++;
+            } else {
+                month++;
+            }
+            
+            navigateToMonth(year, month + 1);
+        });
+    }
     
     monthSelect.addEventListener('change', () => {
         navigateToMonth(yearSelect.value, parseInt(monthSelect.value) + 1);
@@ -827,34 +1448,208 @@ document.addEventListener('DOMContentLoaded', function() {
     yearSelect.addEventListener('change', () => {
         navigateToMonth(yearSelect.value, parseInt(monthSelect.value) + 1);
     });
+}
+
+function initializeViewSwitching() {
+    // Set Month view as default active
+    currentView = 'month';
+    showView('month');
+}
+
+function initializeQuickAdd() {
+    // Close modal when clicking outside
+    const modal = document.getElementById('quickAddModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeQuickAdd();
+            }
+        });
+    }
     
-    // Calendar date click handler
+    // Handle form submission
+    const quickForm = document.getElementById('quickAddForm');
+    if (quickForm) {
+        quickForm.addEventListener('submit', function(e) {
+            // Let the form submit normally, but provide user feedback
+            const submitBtn = quickForm.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '⏳ Adding...';
+                submitBtn.disabled = true;
+            }
+        });
+    }
+}
+
+function initializeCalendarInteractions() {
+    // Enhanced calendar date interactions
     document.querySelectorAll('.calendar-date:not(.other-month)').forEach(date => {
+        // Click handler
         date.addEventListener('click', function() {
             const dateValue = this.getAttribute('data-date');
-            document.getElementById('eventDate').value = dateValue;
-            
-            // Highlight selected date
-            document.querySelectorAll('.calendar-date').forEach(d => {
-                d.classList.remove('highlight');
-            });
-            this.classList.add('highlight');
+            selectCalendarDate(dateValue);
+        });
+        
+        // Keyboard accessibility
+        date.setAttribute('tabindex', '0');
+        date.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
         });
     });
-});
+}
 
+// 🚀 VIEW SWITCHING FUNCTIONALITY
+function switchCalendarView(viewType) {
+    console.log('Switching to view:', viewType);
+    
+    // Update button states
+    document.querySelectorAll('.view-mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === viewType);
+    });
+    
+    currentView = viewType;
+    showView(viewType);
+}
+
+function showView(viewType) {
+    // Hide all views
+    const monthContainer = document.getElementById('monthViewContainer');
+    const weekContainer = document.getElementById('weekViewContainer');
+    const dayContainer = document.getElementById('dayViewContainer');
+    
+    if (monthContainer) monthContainer.style.display = 'none';
+    if (weekContainer) weekContainer.classList.remove('active');
+    if (dayContainer) dayContainer.classList.remove('active');
+    
+    // Show selected view
+    switch(viewType) {
+        case 'month':
+            if (monthContainer) monthContainer.style.display = 'block';
+            break;
+        case 'week':
+            if (weekContainer) {
+                weekContainer.classList.add('active');
+                updateWeekView();
+            }
+            break;
+        case 'day':
+            if (dayContainer) {
+                dayContainer.classList.add('active');
+                updateDayView();
+            }
+            break;
+    }
+}
+
+// 🚀 QUICK ADD FUNCTIONALITY
+function toggleEventForm() {
+    const modal = document.getElementById('quickAddModal');
+    if (modal) {
+        if (modal.classList.contains('show')) {
+            closeQuickAdd();
+        } else {
+            openQuickAdd();
+        }
+    }
+}
+
+function openQuickAdd() {
+    const modal = document.getElementById('quickAddModal');
+    if (modal) {
+        modal.classList.add('show');
+        
+        // Set date to selected date or today
+        const dateInput = document.getElementById('quickEventDate');
+        if (dateInput) {
+            if (selectedDate) {
+                dateInput.value = selectedDate;
+            } else {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+        }
+        
+        // Focus on title input
+        const titleInput = modal.querySelector('input[name="title"]');
+        if (titleInput) {
+            setTimeout(() => titleInput.focus(), 100);
+        }
+    }
+}
+
+function closeQuickAdd() {
+    const modal = document.getElementById('quickAddModal');
+    if (modal) {
+        modal.classList.remove('show');
+        
+        // Reset form
+        const form = document.getElementById('quickAddForm');
+        if (form) {
+            form.reset();
+            
+            // Reset submit button
+            const submitBtn = form.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.innerHTML = '➕ Add Event';
+                submitBtn.disabled = false;
+            }
+        }
+    }
+}
+
+// 🚀 CALENDAR DATE SELECTION
+function selectCalendarDate(dateString) {
+    console.log('Selected date:', dateString);
+    
+    selectedDate = dateString;
+    
+    // Update main event form date
+    const eventDateInput = document.getElementById('eventDate');
+    if (eventDateInput) {
+        eventDateInput.value = dateString;
+    }
+    
+    // Highlight selected date
+    document.querySelectorAll('.calendar-date').forEach(d => {
+        d.classList.remove('highlight');
+    });
+    
+    const selectedDateElement = document.querySelector(`[data-date="${dateString}"]`);
+    if (selectedDateElement) {
+        selectedDateElement.classList.add('highlight');
+    }
+    
+    // Open quick add modal
+    openQuickAdd();
+}
+
+// 🚀 NAVIGATION FUNCTIONS
 function navigateToMonth(year, month) {
-    window.location.href = `{{ route('calendar') }}?year=${year}&month=${month}`;
+    const url = `{{ route('calendar') }}?year=${year}&month=${month}`;
+    window.location.href = url;
 }
 
 function goToToday() {
     const today = new Date();
-    navigateToMonth(today.getFullYear(), today.getMonth() + 1);
+    if (currentView === 'month') {
+        navigateToMonth(today.getFullYear(), today.getMonth() + 1);
+    } else {
+        // For week/day views, implement specific navigation
+        console.log('Navigate to today in', currentView, 'view');
+        switchCalendarView('month'); // Fall back to month view for now
+        setTimeout(() => {
+            navigateToMonth(today.getFullYear(), today.getMonth() + 1);
+        }, 100);
+    }
 }
 
 function goToMonth(offset) {
     const monthSelect = document.getElementById('monthSelect');
     const yearSelect = document.getElementById('yearSelect');
+    
+    if (!monthSelect || !yearSelect) return;
     
     let month = parseInt(monthSelect.value) + offset;
     let year = parseInt(yearSelect.value);
@@ -869,6 +1664,63 @@ function goToMonth(offset) {
     
     navigateToMonth(year, month + 1);
 }
+
+// 🚀 WEEK VIEW FUNCTIONS (Placeholder)
+function updateWeekView() {
+    const currentWeekElement = document.getElementById('currentWeek');
+    if (currentWeekElement) {
+        const today = new Date();
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay());
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        
+        currentWeekElement.textContent = `Week of ${startOfWeek.toLocaleDateString('en-US', {month: 'short', day: 'numeric'})} - ${endOfWeek.toLocaleDateString('en-US', {month: 'short', day: 'numeric'})}, ${today.getFullYear()}`;
+    }
+}
+
+function navigateWeek(offset) {
+    console.log('Navigate week:', offset);
+    // Implement week navigation
+}
+
+// 🚀 DAY VIEW FUNCTIONS (Placeholder)
+function updateDayView() {
+    const currentDayElement = document.getElementById('currentDay');
+    if (currentDayElement) {
+        const today = new Date();
+        currentDayElement.textContent = today.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+}
+
+function navigateDay(offset) {
+    console.log('Navigate day:', offset);
+    // Implement day navigation
+}
+
+// Add CSS for highlight effect
+const style = document.createElement('style');
+style.textContent = `
+    .calendar-date.highlight {
+        background: linear-gradient(135deg, #8CE0FF 0%, #6bd4ff 100%) !important;
+        color: #181A26 !important;
+        font-weight: 700 !important;
+        transform: scale(1.1) !important;
+        box-shadow: 0 8px 25px rgba(140, 224, 255, 0.4) !important;
+        z-index: 10 !important;
+        border-color: #8CE0FF !important;
+    }
+    
+    .calendar-date.highlight .calendar-day-number {
+        color: #181A26 !important;
+    }
+`;
+document.head.appendChild(style);
 </script>
 @endpush
 @endsection

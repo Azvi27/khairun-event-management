@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- ADD THIS -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Verify OTP - Our Memories</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=DM+Serif+Text&display=swap" rel="stylesheet">
     <link href="{{ asset('css/otp-enhanced.css') }}" rel="stylesheet">
@@ -53,13 +53,12 @@
 
                 <form method="POST" action="{{ route('otp.verify.post') }}">
                     @csrf
-                    
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                     <div class="otp-input-container">
-                        <label for="otp" class="otp-label">Kode OTP (6 Digit)</label>
-                        <input id="otp" 
-                               name="otp" 
+                        <label for="otp_code" class="otp-label">Kode OTP (6 Digit)</label>
+                        {{-- PERBAIKAN: Mengubah name="otp" menjadi name="otp_code" --}}
+                        <input id="otp_code" 
+                               name="otp_code" 
                                type="text" 
                                class="otp-input" 
                                maxlength="6"
@@ -115,27 +114,19 @@
 
     <script>
         // Auto format OTP input
-        document.getElementById('otp').addEventListener('input', function(e) {
+        document.getElementById('otp_code').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
 
-        // Auto submit dan force redirect when 6 digits entered
-        document.getElementById('otp').addEventListener('input', function(e) {
+        // Auto submit when 6 digits entered
+        document.getElementById('otp_code').addEventListener('input', function(e) {
             if (this.value.length === 6) {
                 setTimeout(() => {
                     if (this.value.length === 6) {
-                        // Add loading indicator
                         const button = document.querySelector('.verify-button');
                         button.innerHTML = '⏳ Verifying...';
                         button.disabled = true;
-                        
-                        // Submit form
                         this.form.submit();
-                        
-                        // Force redirect after 3 seconds as backup
-                        setTimeout(() => {
-                            window.location.href = '/dashboard';
-                        }, 3000);
                     }
                 }, 500);
             }
@@ -146,13 +137,6 @@
             const button = document.querySelector('.verify-button');
             button.innerHTML = '⏳ Processing...';
             button.disabled = true;
-            
-            // Backup redirect
-            setTimeout(() => {
-                if (!document.hidden) {
-                    window.location.href = '/dashboard';
-                }
-            }, 4000);
         });
 
         // Resend OTP function

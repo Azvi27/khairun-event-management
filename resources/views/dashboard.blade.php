@@ -4,9 +4,531 @@
 
 @push('styles')
 <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+<style>
+/* 🚀 ENHANCED: Modern Glassmorphism Dashboard */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+.quick-action-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    box-shadow: 
+        0 8px 32px rgba(31, 38, 135, 0.15),
+        0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.quick-action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(59, 130, 246, 0.1) 0%, 
+        rgba(147, 51, 234, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 20px;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        0 20px 40px rgba(59, 130, 246, 0.25),
+        0 10px 30px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(59, 130, 246, 0.4);
+    text-decoration: none;
+    color: inherit;
+}
+
+.quick-action-card:hover::before {
+    opacity: 1;
+}
+
+.action-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+    z-index: 2;
+    position: relative;
+}
+
+.quick-action-card:hover .action-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.action-text {
+    z-index: 2;
+    position: relative;
+}
+
+.action-text h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.025em;
+}
+
+.action-text p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    opacity: 0.85;
+    font-weight: 500;
+}
+
+/* 🎨 Enhanced Statistics Section */
+.stats-section {
+    margin: 4rem 0;
+    padding: 0 1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    position: relative;
+    background: linear-gradient(135deg, 
+        var(--color-primary) 0%, 
+        var(--color-primary-dark) 50%,
+        #1e40af 100%);
+    color: white;
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 
+        0 10px 30px rgba(59, 130, 246, 0.3),
+        0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 
+        0 20px 40px rgba(59, 130, 246, 0.4),
+        0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card:hover::before {
+    opacity: 1;
+}
+
+.stat-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-card:hover .stat-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.stat-content {
+    position: relative;
+    z-index: 2;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #ffffff, #e0f2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.stat-label {
+    font-size: 1rem;
+    opacity: 0.95;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+}
+
+/* 🎯 Enhanced Hero Section */
+.hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-title {
+    position: relative;
+    z-index: 2;
+}
+
+.cta-button {
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+/* 🌟 Mobile Optimization */
+@media (max-width: 768px) {
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    
+    .quick-action-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem 1rem;
+        gap: 1rem;
+    }
+    
+    .action-icon {
+        font-size: 2.25rem;
+    }
+    
+    .action-text h3 {
+        font-size: 1.1rem;
+    }
+    
+    .action-text p {
+        font-size: 0.85rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .stat-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .stat-icon {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .quick-action-card {
+        flex-direction: row;
+        text-align: left;
+        padding: 1.25rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* ✨ Loading Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.quick-action-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.quick-action-card:nth-child(1) { animation-delay: 0.1s; }
+.quick-action-card:nth-child(2) { animation-delay: 0.2s; }
+.quick-action-card:nth-child(3) { animation-delay: 0.3s; }
+.quick-action-card:nth-child(4) { animation-delay: 0.4s; }
+
+.stat-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.2s; }
+.stat-card:nth-child(2) { animation-delay: 0.3s; }
+.stat-card:nth-child(3) { animation-delay: 0.4s; }
+.stat-card:nth-child(4) { animation-delay: 0.5s; }
+
+/* ⚡ ENHANCED LOADING OVERLAY */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.page-loader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader-content {
+    text-align: center;
+    color: white;
+}
+
+.loader-spinner {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(140, 224, 255, 0.3);
+    border-top: 3px solid #8CE0FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+.loader-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #8CE0FF;
+    opacity: 0.9;
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+// 🚀 ENHANCED PAGE LOADING EXPERIENCE
+document.addEventListener('DOMContentLoaded', function() {
+    // Remove page loader with smooth transition
+    setTimeout(() => {
+        const loader = document.querySelector('.page-loader');
+        if (loader) {
+            loader.classList.add('fade-out');
+            setTimeout(() => {
+                loader.remove();
+            }, 500);
+        }
+    }, 800);
+
+    // 🎯 Enhanced button interactions
+    addButtonLoadingStates();
+    
+    // ✨ Add scroll animations
+    addScrollAnimations();
+    
+    // 🎨 Enhanced visual feedback
+    addVisualFeedback();
+});
+
+function addButtonLoadingStates() {
+    const buttons = document.querySelectorAll('a[href], button');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Skip if it's an external link or opens in new tab
+            if (this.target === '_blank' || this.href?.startsWith('http')) return;
+            
+            // Add loading state
+            this.classList.add('btn-loading');
+            this.style.pointerEvents = 'none';
+            
+            // Remove loading state after navigation (or timeout)
+            setTimeout(() => {
+                this.classList.remove('btn-loading');
+                this.style.pointerEvents = 'auto';
+            }, 2000);
+        });
+    });
+}
+
+function addScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('.animate-card, .animate-hero, .animate-slide-left, .animate-slide-right').forEach(el => {
+        el.style.animationPlayState = 'paused';
+        observer.observe(el);
+    });
+}
+
+function addVisualFeedback() {
+    // Add ripple effect to interactive elements
+    document.querySelectorAll('.quick-action-card, .memory-card, .stat-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            ripple.classList.add('ripple-effect');
+            
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+}
+
+// 🌟 Enhanced stat number animation
+function animateNumbers() {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    statNumbers.forEach(number => {
+        const finalValue = parseInt(number.textContent);
+        const duration = 2000;
+        const increment = finalValue / (duration / 16);
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= finalValue) {
+                current = finalValue;
+                clearInterval(timer);
+            }
+            number.textContent = Math.floor(current);
+        }, 16);
+    });
+}
+
+// Start number animation when stats section is visible
+const statsSection = document.querySelector('.stats-section');
+if (statsSection) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateNumbers();
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+    
+    observer.observe(statsSection);
+}
+
+// 🎨 Add ripple effect styles
+const rippleCSS = `
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(140, 224, 255, 0.3);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+`;
+
+const style = document.createElement('style');
+style.textContent = rippleCSS;
+document.head.appendChild(style);
+</script>
 @endpush
 
 @section('content')
+<!-- ⚡ ENHANCED PAGE LOADER -->
+<div class="page-loader">
+    <div class="loader-content">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Loading your memories...</div>
+    </div>
+</div>
+
 <!-- Success Login Message -->
     @if(session('success'))
         <div class="mb-8 p-4 text-center" style="
@@ -20,22 +542,99 @@
         </div>
     @endif
 
-    <!-- Hero Section -->
-    <section class="hero mb-16">
+    <!-- 🚀 ENHANCED: Hero Section -->
+    <section class="hero mb-16 animate-hero">
         <h1 class="hero-title text-center">
             A journey told in memories — stitched together by time, and always open for the stories you choose to keep.
         </h1>
+        
+        <!-- ✅ ORIGINAL BUTTON TETAP ADA -->
         <div class="text-center mt-8">
-            <a href="{{ route('memories.create') }}" class="cta-button">
+            <a href="{{ route('memories.create') }}" class="cta-button hover-pulse glass-enhanced">
                 ➕ Add New Memory
+            </a>
+        </div>
+        
+        <!-- 🚀 ENHANCED: Quick Actions Grid -->
+        <div class="quick-actions-grid">
+            <a href="{{ route('memories.create') }}" class="quick-action-card animate-card animate-stagger-1 hover-bounce">
+                <div class="action-icon">📸</div>
+                <div class="action-text">
+                    <h3>Add Memory</h3>
+                    <p>Capture a moment</p>
+                </div>
+            </a>
+            
+            <a href="{{ route('birthday-surprises.create') }}" class="quick-action-card animate-card animate-stagger-2 hover-bounce">
+                <div class="action-icon">🎁</div>
+                <div class="action-text">
+                    <h3>Create Surprise</h3>
+                    <p>Plan something special</p>
+                </div>
+            </a>
+            
+            <a href="{{ route('calendar') }}" class="quick-action-card animate-card animate-stagger-3 hover-bounce">
+                <div class="action-icon">📅</div>
+                <div class="action-text">
+                    <h3>Add Event</h3>
+                    <p>Schedule together</p>
+                </div>
+            </a>
+            
+            <a href="{{ route('music.index') }}" class="quick-action-card animate-card animate-stagger-4 hover-bounce">
+                <div class="action-icon">🎵</div>
+                <div class="action-text">
+                    <h3>Our Playlist</h3>
+                    <p>Find perfect song</p>
+                </div>
             </a>
         </div>
     </section>
 
+    <!-- 🚀 ENHANCED: Statistics Section -->
+    @if(isset($stats) && $stats)
+    <section class="stats-section animate-slide-left">
+        <div class="stats-grid">
+            <div class="stat-card animate-card animate-stagger-1 hover-pulse">
+                <div class="stat-icon">💝</div>
+                <div class="stat-content">
+                    <span class="stat-number">{{ $stats['total_memories'] ?? 0 }}</span>
+                    <div class="stat-label">Total Memories</div>
+                </div>
+            </div>
+            
+            <div class="stat-card animate-card animate-stagger-2 hover-pulse">
+                <div class="stat-icon">🌟</div>
+                <div class="stat-content">
+                    <span class="stat-number">{{ $stats['days_together'] ?? 0 }}</span>
+                    <div class="stat-label">Days Together</div>
+                </div>
+            </div>
+            
+            <div class="stat-card animate-card animate-stagger-3 hover-pulse">
+                <div class="stat-icon">🎁</div>
+                <div class="stat-content">
+                    <span class="stat-number">{{ $stats['pending_surprises'] ?? 0 }}</span>
+                    <div class="stat-label">Surprises Waiting</div>
+                </div>
+            </div>
+            
+            <div class="stat-card animate-card animate-stagger-4 hover-pulse">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-content">
+                    <span class="stat-number">{{ $stats['memories_this_month'] ?? 0 }}</span>
+                    <div class="stat-label">This Month</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- ✅ SEMUA EXISTING CONTENT TETAP SAMA -->
     <!-- Main Content Grid -->
     <div class="grid gap-16">
-        <!-- Memories Timeline Section -->
-        <section class="content-section">
+        <!-- ✅ Memories Timeline Section - TIDAK DIUBAH -->
+        <section class="content-section animate-slide-right">
             <header class="mb-8">
                 <h2 class="section-title text-left">📸 Our Gallery of Memories</h2>
                 <p class="text-body-large text-left" style="color: var(--color-text-secondary); opacity: 0.8;">
@@ -51,7 +650,7 @@
                     <div class="memory-timeline-wrapper">
                         <div class="memory-timeline-horizontal" id="dashboardMemoriesContainer">
                     @foreach($memories as $memory)
-                        <article class="memory-card" onclick="window.location.href='{{ route('memories.show', $memory) }}'" style="cursor: pointer;">
+                        <article class="memory-card animate-card animate-stagger-{{ $loop->index % 6 + 1 }} hover-bounce" onclick="window.location.href='{{ route('memories.show', $memory) }}'" style="cursor: pointer;">
                             <header class="memory-date">
                                 📅 {{ $memory->memory_date->format('d F Y') }}
                             </header>
@@ -106,7 +705,7 @@
             @endif
         </section>
 
-        <!-- Calendar Section -->
+        <!-- ✅ Calendar Section - TIDAK DIUBAH -->
         <section class="content-section calendar-section">
             <header class="mb-8">
                 <h2 class="section-title text-left">📅 Calendar Overview</h2>
@@ -223,7 +822,7 @@
             @endif
         </section>
 
-        <!-- Countdown Section -->
+        <!-- ✅ Countdown Section - TIDAK DIUBAH -->
         <section class="countdown-section">
             @if($nextSurprise)
                 <header class="mb-8">
@@ -266,7 +865,7 @@
             @endif
         </section>
 
-        <!-- Music Section -->
+        <!-- ✅ Music Section - TIDAK DIUBAH -->
         <section class="content-section music-section" role="button" tabindex="0" 
                  onclick="window.location.href='{{ route('music.index') }}'" 
                  style="cursor: pointer;">
@@ -388,13 +987,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // Add subtle loading animation for memory cards (optional)
-    const memoryCards = document.querySelectorAll('.memory-card');
-    memoryCards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-        card.style.animation = 'slideUp 0.6s ease-out';
-    });
 });
 
 // 🚀 Dashboard Navigation - Show Only Complete Cards (No Cropping)
@@ -485,8 +1077,6 @@ function setupDashboardNavigation() {
         const possibleCards = Math.floor(availableWidth / total);
         const finalCount = Math.max(1, Math.min(possibleCards, maxCards));
         
-
-        
         return finalCount;
     }
     
@@ -545,8 +1135,6 @@ function setupDashboardNavigation() {
             prevBtn.style.pointerEvents = 'auto';
             nextBtn.style.pointerEvents = 'auto';
         }
-        
-
     }
     
     prevBtn.addEventListener('click', () => {
@@ -629,25 +1217,6 @@ function setupDashboardNavigation() {
             updatePosition(false);
         }, 100);
     });
-}
-
-// Add slideUp animation keyframes - FIXED: Memory cards are now visible by default
-if (!document.querySelector('style[data-dashboard-animations]')) {
-    const style = document.createElement('style');
-    style.setAttribute('data-dashboard-animations', 'true');
-    style.textContent = `
-        @keyframes slideUp {
-            from {
-                opacity: 0.7;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    `;
-    document.head.appendChild(style);
 }
 </script>
 @endpush

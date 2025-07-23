@@ -52,6 +52,7 @@ class EventController extends Controller
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'end_time' => 'nullable|date_format:H:i',
             'type' => 'required|in:event,cycle,birthday',
+            'description' => 'nullable|string|max:1000',
             'shared_with' => 'nullable|array',
             'shared_with.*' => 'exists:users,id',
             'spotify_track_id' => 'nullable|string',
@@ -72,10 +73,11 @@ class EventController extends Controller
         $event = Event::create([
             'created_by' => auth()->id(),
             'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
             'start_date' => $startDateTime,
             'end_date' => $endDateTime,
             'type' => $validated['type'],
-            'spotify_track_id' => $validated['spotify_track_id'],
+            'spotify_track_id' => $validated['spotify_track_id'] ?? null,
         ]);
 
         // Handle sharing
