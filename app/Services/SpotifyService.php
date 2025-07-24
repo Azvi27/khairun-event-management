@@ -88,6 +88,37 @@ class SpotifyService
                 'preview_url' => null,
                 'external_url' => 'https://open.spotify.com/track/5E6f7G8h9I0j1K2l3M4N',
                 'duration_ms' => 269000,
+            ],
+            // ✅ TAMBAHKAN: Track yang cocok dengan query "mon"
+            [
+                'id' => 'mock_007',
+                'name' => 'Monolog',
+                'artist' => 'Pamungkas',
+                'album' => 'Walk the Talk',
+                'image' => 'https://i.scdn.co/image/ab67616d0000b273c3d4e5f6g7h8i9j0k1l2m3n4',
+                'preview_url' => null,
+                'external_url' => 'https://open.spotify.com/track/6E6f7G8h9I0j1K2l3M4N5',
+                'duration_ms' => 275000,
+            ],
+            [
+                'id' => 'mock_008',
+                'name' => 'Monday Morning',
+                'artist' => 'Fleetwood Mac',
+                'album' => 'Fleetwood Mac',
+                'image' => 'https://i.scdn.co/image/ab67616d0000b273d4e5f6g7h8i9j0k1l2m3n4o5',
+                'preview_url' => null,
+                'external_url' => 'https://open.spotify.com/track/7E6f7G8h9I0j1K2l3M4N5O',
+                'duration_ms' => 290000,
+            ],
+            [
+                'id' => 'mock_009',
+                'name' => 'Money',
+                'artist' => 'Pink Floyd',
+                'album' => 'The Dark Side of the Moon',
+                'image' => 'https://i.scdn.co/image/ab67616d0000b273e5f6g7h8i9j0k1l2m3n4o5p6',
+                'preview_url' => null,
+                'external_url' => 'https://open.spotify.com/track/8E6f7G8h9I0j1K2l3M4N5O6',
+                'duration_ms' => 382000,
             ]
         ];
 
@@ -95,7 +126,8 @@ class SpotifyService
         if (!empty($query)) {
             $mockData = array_filter($mockData, function($track) use ($query) {
                 return stripos($track['name'], $query) !== false || 
-                       stripos($track['artist'], $query) !== false;
+                       stripos($track['artist'], $query) !== false ||
+                       stripos($track['album'], $query) !== false;
             });
         }
 
@@ -526,7 +558,7 @@ class SpotifyService
     /**
      * Get user's access token with automatic refresh
      */
-    protected function getUserAccessToken($user)
+    public function getUserAccessToken($user)
     {
         if (!$user->hasSpotifyConnection()) {
             throw new \Exception('User does not have valid Spotify connection');
@@ -543,7 +575,7 @@ class SpotifyService
     /**
      * Refresh user's access token
      */
-    protected function refreshUserToken($user)
+    public function refreshUserToken($user)
     {
         if (!$user->spotify_refresh_token) {
             throw new \Exception('No refresh token available for user');

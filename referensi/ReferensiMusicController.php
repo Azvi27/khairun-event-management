@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\SpotifyService;
 use App\Models\Memory;
 use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
 
 class MusicController extends Controller
 {
@@ -16,14 +17,9 @@ class MusicController extends Controller
         $this->spotifyService = $spotifyService;
     }
 
-    /**
-     * Halaman musik utama
-     */
     public function index()
     {
-        $user = auth()->user();
-        
-        // Get user's Spotify playlists if connected
+        $user = Auth::user();
         $userPlaylists = [];
         $currentPlayback = null;
         $hasSpotifyConnection = $user->hasSpotifyConnection();
@@ -44,44 +40,25 @@ class MusicController extends Controller
             }
         }
         
-        // Get recommended tracks
         $recommendedTracks = $this->spotifyService->getRecommendedTracks(12);
         
-        // Get tracks dari memories
-        $memoryTracks = Memory::where('user_id', auth()->id())
+        $memoryTracks = Memory::where('user_id', $user->id)
                               ->whereNotNull('spotify_track_id')
                               ->latest()
                               ->take(6)
                               ->get()
-                              ->map(function($memory) {
-                                  $track = $this->spotifyService->getTrack($memory->spotify_track_id);
-                                  return $track ? array_merge($track, ['memory' => $memory]) : null;
-                              })
+                              ->map(fn($memory) => $this->spotifyService->getTrack($memory->spotify_track_id))
                               ->filter();
 
-        // Get tracks dari events
-        $eventTracks = Event::whereHas('users', function($query) {
-                                $query->where('user_id', auth()->id());
-                              })
+        $eventTracks = Event::whereHas('users', fn($q) => $q->where('user_id', $user->id))
                               ->whereNotNull('spotify_track_id')
                               ->latest()
                               ->take(6)
                               ->get()
-                              ->map(function($event) {
-                                  $track = $this->spotifyService->getTrack($event->spotify_track_id);
-                                  return $track ? array_merge($track, ['event' => $event]) : null;
-                              })
+                              ->map(fn($event) => $this->spotifyService->getTrack($event->spotify_track_id))
                               ->filter();
-
+        
         $isMockMode = $this->spotifyService->isMockMode();
-
-        // ✅ DEBUG: Log status koneksi untuk debugging
-        \Log::info('Music Controller - Spotify Connection Status', [
-            'user_id' => $user->id,
-            'hasSpotifyConnection' => $hasSpotifyConnection,
-            'hasToken' => !empty($spotifyToken),
-            'isMockMode' => $isMockMode
-        ]);
 
         return view('music.index', compact(
             'recommendedTracks', 
@@ -95,118 +72,17 @@ class MusicController extends Controller
         ));
     }
 
-    /**
-     * Search musik
-     */
-    public function search(Request $request)
-    {
-        $query = $request->get('q', '');
-        $limit = $request->get('limit', 20);
-
-        \Log::info('Music Search Request', [
-            'query' => $query,
-            'limit' => $limit,
-            'user_id' => auth()->id()
-        ]);
-
-        if (empty($query)) {
-            \Log::info('Music Search: Empty query, returning empty results');
-            return response()->json([
-                'success' => true,
-                'tracks' => []
-            ]);
-        }
-
-        try {
-            $tracks = $this->spotifyService->searchTracks($query, $limit);
-            
-            \Log::info('Music Search Results', [
-                'query' => $query,
-                'tracks_count' => count($tracks),
-                'tracks' => $tracks
-            ]);
-            
-            return response()->json([
-                'success' => true,
-                'tracks' => $tracks
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('Music Search Error', [
-                'query' => $query,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            
-            return response()->json([
-                'success' => false,
-                'error' => 'Gagal mencari musik: ' . $e->getMessage(),
-                'tracks' => []
-            ], 500);
-        }
-    }
-
-    /**
-     * Get track detail
-     */
-    public function track($trackId)
-    {
-        $track = $this->spotifyService->getTrack($trackId);
-
-        if (!$track) {
-            return response()->json(['error' => 'Track not found'], 404);
-        }
-
-        return response()->json(['track' => $track]);
-    }
-
-    /**
-     * Get user's playlists
-     */
-    public function playlists()
-    {
-        $user = auth()->user();
-        
-        if (!$user->hasSpotifyConnection()) {
-            return response()->json(['error' => 'Spotify not connected'], 401);
-        }
-
-        $playlists = $this->spotifyService->getUserPlaylists($user);
-
-        return response()->json(['playlists' => $playlists]);
-    }
-
-    /**
-     * Get playlist tracks
-     */
-    public function playlistTracks($playlistId)
-    {
-        $user = auth()->user();
-        
-        if (!$user->hasSpotifyConnection()) {
-            return response()->json(['error' => 'Spotify not connected'], 401);
-        }
-
-        $tracks = $this->spotifyService->getPlaylistTracks($user, $playlistId);
-
-        return response()->json(['tracks' => $tracks]);
-    }
-
-    /**
-     * Start/Resume playback
-     */
     public function play(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         
         if (!$user->hasSpotifyConnection()) {
             return response()->json(['success' => false, 'error' => 'Spotify not connected'], 401);
         }
 
         $options = [];
-        // Spotify API mengharapkan 'uris' sebagai array
-        if ($request->has('uris')) {
-            $options['uris'] = $request->input('uris');
-        } elseif ($request->has('track_uri')) {
+        // Spotify API mengharapkan 'uris' sebagai array, bukan 'track_uri'
+        if ($request->has('track_uri')) {
             $options['uris'] = [$request->input('track_uri')];
         }
         if ($request->has('context_uri')) {
@@ -232,95 +108,98 @@ class MusicController extends Controller
         return response()->json($result);
     }
 
-    /**
-     * Pause playback
-     */
+    // ... Sisa fungsi (search, pause, next, dll) tidak perlu diubah ...
+    public function search(Request $request)
+    {
+        $query = $request->get('q', '');
+        $limit = $request->get('limit', 20);
+        if (empty($query)) {
+            return response()->json(['tracks' => []]);
+        }
+        $tracks = $this->spotifyService->searchTracks($query, $limit);
+        return response()->json(['tracks' => $tracks]);
+    }
+
+    public function track($trackId)
+    {
+        $track = $this->spotifyService->getTrack($trackId);
+        if (!$track) {
+            return response()->json(['error' => 'Track not found'], 404);
+        }
+        return response()->json(['track' => $track]);
+    }
+
+    public function playlists()
+    {
+        $user = auth()->user();
+        if (!$user->hasSpotifyConnection()) {
+            return response()->json(['error' => 'Spotify not connected'], 401);
+        }
+        $playlists = $this->spotifyService->getUserPlaylists($user);
+        return response()->json(['playlists' => $playlists]);
+    }
+
+    public function playlistTracks($playlistId)
+    {
+        $user = auth()->user();
+        if (!$user->hasSpotifyConnection()) {
+            return response()->json(['error' => 'Spotify not connected'], 401);
+        }
+        $tracks = $this->spotifyService->getPlaylistTracks($user, $playlistId);
+        return response()->json(['tracks' => $tracks]);
+    }
+
     public function pause()
     {
         $user = auth()->user();
-        
         if (!$user->hasSpotifyConnection()) {
             return response()->json(['error' => 'Spotify not connected'], 401);
         }
-
         $result = $this->spotifyService->pausePlayback($user);
-
         return response()->json($result);
     }
 
-    /**
-     * Skip to next track
-     */
     public function next()
     {
         $user = auth()->user();
-        
         if (!$user->hasSpotifyConnection()) {
             return response()->json(['error' => 'Spotify not connected'], 401);
         }
-
         $result = $this->spotifyService->nextTrack($user);
-
         return response()->json($result);
     }
 
-    /**
-     * Skip to previous track
-     */
     public function previous()
     {
         $user = auth()->user();
-        
         if (!$user->hasSpotifyConnection()) {
             return response()->json(['error' => 'Spotify not connected'], 401);
         }
-
         $result = $this->spotifyService->previousTrack($user);
-
         return response()->json($result);
     }
 
-    /**
-     * Get current playback state
-     */
     public function currentPlayback()
     {
         $user = auth()->user();
-        
         if (!$user->hasSpotifyConnection()) {
             return response()->json(['error' => 'Spotify not connected'], 401);
         }
-
         $playback = $this->spotifyService->getCurrentPlayback($user);
-
         return response()->json(['playback' => $playback]);
     }
     
-    /**
-     * Transfer playback to specific device
-     */
     public function transferPlayback(Request $request)
     {
         $user = auth()->user();
-        
         if (!$user->hasSpotifyConnection()) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Spotify not connected'
-            ], 401);
+            return response()->json(['success' => false, 'error' => 'Spotify not connected'], 401);
         }
-        
         $deviceId = $request->input('device_id');
-        
         if (!$deviceId) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Device ID is required'
-            ], 400);
+            return response()->json(['success' => false, 'error' => 'Device ID is required'], 400);
         }
-        
         $result = $this->spotifyService->transferPlayback($user, $deviceId);
-        
         return response()->json($result);
     }
 }
