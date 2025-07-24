@@ -27,10 +27,12 @@ class MusicController extends Controller
         $userPlaylists = [];
         $currentPlayback = null;
         $hasSpotifyConnection = $user->hasSpotifyConnection();
+        $spotifyAccessToken = null;
         
         if ($hasSpotifyConnection) {
             $userPlaylists = $this->spotifyService->getUserPlaylists($user, 10);
             $currentPlayback = $this->spotifyService->getCurrentPlayback($user);
+            $spotifyAccessToken = $user->spotify_access_token;
         }
         
         // Get recommended tracks
@@ -71,7 +73,8 @@ class MusicController extends Controller
             'isMockMode',
             'userPlaylists',
             'currentPlayback',
-            'hasSpotifyConnection'
+            'hasSpotifyConnection',
+            'spotifyAccessToken'
         ));
     }
 
@@ -146,7 +149,11 @@ class MusicController extends Controller
         $user = auth()->user();
         
         if (!$user->hasSpotifyConnection()) {
-            return response()->json(['error' => 'Spotify not connected'], 401);
+            return response()->json([
+                'success' => false,
+                'error' => 'Spotify not connected',
+                'error_code' => 'NO_CONNECTION'
+            ], 401);
         }
 
         $options = [];
@@ -164,8 +171,36 @@ class MusicController extends Controller
                 $options['offset'] = ['position' => (int)$request->input('offset')];
             }
         }
+        
+        // Add device ID if provided
+        $deviceId = $request->input('device_id');
 
-        $result = $this->spotifyService->startPlayback($user, $options);
+        $result = $this->spotifyService->startPlayback($user, $options, $deviceId);
+        
+        // Enhanced error handling
+        if (!$result['success']) {
+            $errorMessage = $result['error'] ?? 'Unknown error';
+            $errorCode = 'PLAYBACK_FAILED';
+            
+            // Parse specific error types
+            if (strpos($errorMessage, 'No active device') !== false) {
+                $errorCode = 'NO_ACTIVE_DEVICE';
+                $errorMessage = 'No active Spotify device found. Please open Spotify on any device first.';
+            } elseif (strpos($errorMessage, 'Premium required') !== false) {
+                $errorCode = 'PREMIUM_REQUIRED';
+                $errorMessage = 'Spotify Premium is required for playback control.';
+            } elseif (strpos($errorMessage, 'Device not found') !== false) {
+                $errorCode = 'DEVICE_NOT_FOUND';
+                $errorMessage = 'Spotify device not found. Please ensure Spotify is running.';
+            }
+            
+            return response()->json([
+                'success' => false,
+                'error' => $errorMessage,
+                'error_code' => $errorCode,
+                'status_code' => $result['status_code'] ?? null
+            ]);
+        }
 
         return response()->json($result);
     }
@@ -232,5 +267,33 @@ class MusicController extends Controller
         $playback = $this->spotifyService->getCurrentPlayback($user);
 
         return response()->json(['playback' => $playback]);
+    }
+    
+    /**
+     * Transfer playback to specific device
+     */
+    public function transferPlayback(Request $request)
+    {
+        $user = auth()->user();
+        
+        if (!$user->hasSpotifyConnection()) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Spotify not connected'
+            ], 401);
+        }
+        
+        $deviceId = $request->input('device_id');
+        
+        if (!$deviceId) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Device ID is required'
+            ], 400);
+        }
+        
+        $result = $this->spotifyService->transferPlayback($user, $deviceId);
+        
+        return response()->json($result);
     }
 }

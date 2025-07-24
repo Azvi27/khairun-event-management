@@ -103,18 +103,20 @@ Route::middleware('auth')->group(function () {
         Route::post('/next', [App\Http\Controllers\MusicController::class, 'next'])->name('next');
         Route::post('/previous', [App\Http\Controllers\MusicController::class, 'previous'])->name('previous');
         Route::get('/current-playback', [App\Http\Controllers\MusicController::class, 'currentPlayback'])->name('current-playback');
+        Route::post('/transfer-playback', [App\Http\Controllers\MusicController::class, 'transferPlayback'])->name('transfer-playback');
     });
     
-    // Spotify Authentication Routes
+    // Spotify Authentication Routes (kecuali callback)
     Route::prefix('spotify')->name('spotify.')->group(function () {
         Route::get('/connect', [App\Http\Controllers\SpotifyAuthController::class, 'redirectToSpotify'])->name('connect');
-        Route::get('/callback', [App\Http\Controllers\SpotifyAuthController::class, 'handleCallback'])->name('callback');
         Route::post('/disconnect', [App\Http\Controllers\SpotifyAuthController::class, 'disconnect'])->name('disconnect');
         Route::get('/status', [App\Http\Controllers\SpotifyAuthController::class, 'status'])->name('status');
         Route::post('/refresh-token', [App\Http\Controllers\SpotifyAuthController::class, 'refreshToken'])->name('refresh-token');
     });
 });
 
+// Spotify callback route (di luar middleware auth)
+Route::get('/spotify/callback', [App\Http\Controllers\SpotifyAuthController::class, 'handleCallback'])->name('spotify.callback');
 require __DIR__.'/auth.php';
 
 // OTP Demo Route (untuk testing enhanced OTP page)
@@ -198,6 +200,12 @@ if (config('app.env') === 'local') {
     Route::get('/test-storage', function() {
         $storageService = app('App\Services\StorageService');
         return response()->json($storageService->getDiskInfo());
+    });
+    
+    // Spotify Debug Routes
+    Route::prefix('debug/spotify')->name('debug.spotify.')->group(function () {
+        Route::get('/', [App\Http\Controllers\SpotifyDebugController::class, 'debug'])->name('info');
+        Route::get('/test-playback', [App\Http\Controllers\SpotifyDebugController::class, 'testPlayback'])->name('test-playback');
     });
 }
 

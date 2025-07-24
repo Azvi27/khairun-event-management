@@ -288,7 +288,7 @@ class SpotifyService
     /**
      * Start/Resume playback on user's active device
      */
-    public function startPlayback($user, $options = [])
+    public function startPlayback($user, $options = [], $deviceId = null)
     {
         if ($this->mockMode || !$user->hasSpotifyConnection()) {
             return ['success' => true, 'mock' => true];
@@ -297,8 +297,15 @@ class SpotifyService
         try {
             $accessToken = $this->getUserAccessToken($user);
             
+            $url = 'https://api.spotify.com/v1/me/player/play';
+            
+            // Add device ID to URL if provided
+            if ($deviceId) {
+                $url .= '?device_id=' . $deviceId;
+            }
+            
             $response = Http::withToken($accessToken)
-                          ->put('https://api.spotify.com/v1/me/player/play', $options);
+                          ->put($url, $options);
 
             return [
                 'success' => $response->successful(),
@@ -306,7 +313,7 @@ class SpotifyService
                 'error' => $response->successful() ? null : $response->body()
             ];
         } catch (\Exception $e) {
-            Log::error('Spotify start playback failed', ['error' => $e->getMessage()]);
+            Log::error('Spotify start playback failed', ['error' => $e->getMessage(), 'device_id' => $deviceId]);
             return ['success' => false, 'error' => $e->getMessage()];
         }
     }
@@ -430,6 +437,35 @@ class SpotifyService
         } catch (\Exception $e) {
             Log::error('Spotify get current playback failed', ['error' => $e->getMessage()]);
             return $this->getMockCurrentPlayback();
+        }
+    }
+    
+    /**
+     * Transfer playback to specific device
+     */
+    public function transferPlayback($user, $deviceId)
+    {
+        if ($this->mockMode || !$user->hasSpotifyConnection()) {
+            return ['success' => true, 'mock' => true];
+        }
+
+        try {
+            $accessToken = $this->getUserAccessToken($user);
+            
+            $response = Http::withToken($accessToken)
+                          ->put('https://api.spotify.com/v1/me/player', [
+                              'device_ids' => [$deviceId],
+                              'play' => false // Don't start playing immediately
+                          ]);
+
+            return [
+                'success' => $response->successful(),
+                'status_code' => $response->status(),
+                'error' => $response->successful() ? null : $response->body()
+            ];
+        } catch (\Exception $e) {
+            Log::error('Spotify transfer playback failed', ['error' => $e->getMessage(), 'device_id' => $deviceId]);
+            return ['success' => false, 'error' => $e->getMessage()];
         }
     }
 

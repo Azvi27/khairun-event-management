@@ -20,7 +20,7 @@ class SpotifyAuthController extends Controller
     {
         $this->clientId = config('services.spotify.client_id');
         $this->clientSecret = config('services.spotify.client_secret');
-        $this->redirectUri = route('spotify.callback');
+        $this->redirectUri = env('SPOTIFY_REDIRECT_URI', route('spotify.callback'));
     }
 
     /**
@@ -34,7 +34,10 @@ class SpotifyAuthController extends Controller
         }
 
         $state = Str::random(16);
-        session(['spotify_state' => $state]);
+        session([
+            'spotify_state' => $state,
+            'spotify_user_id' => Auth::id() // Simpan user ID
+        ]);
 
         $scopes = [
             'streaming',           // Web Playback SDK
@@ -113,8 +116,20 @@ class SpotifyAuthController extends Controller
 
             $spotifyUser = $userResponse->json();
 
-            // Update current user with Spotify data
-            $user = Auth::user();
+            // Get user ID from session instead of Auth::user()
+            $userId = session('spotify_user_id');
+            if (!$userId) {
+                return redirect()->route('login')
+                               ->with('error', 'Session expired. Please login and try again.');
+            }
+
+            // Update user with Spotify data using user ID from session
+            $user = User::find($userId);
+            if (!$user) {
+                return redirect()->route('login')
+                               ->with('error', 'User not found. Please login again.');
+            }
+
             $user->update([
                 'spotify_id' => $spotifyUser['id'],
                 'spotify_access_token' => $tokenData['access_token'],
@@ -123,7 +138,11 @@ class SpotifyAuthController extends Controller
                 'spotify_user_data' => $spotifyUser,
             ]);
 
-            session()->forget('spotify_state');
+            // Clear session data
+            session()->forget(['spotify_state', 'spotify_user_id']);
+
+            // Login the user and redirect
+            Auth::login($user);
 
             return redirect()->route('music.index')
                            ->with('success', 'Successfully connected to Spotify! You can now play music directly.');

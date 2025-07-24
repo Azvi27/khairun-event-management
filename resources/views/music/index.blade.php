@@ -2,6 +2,11 @@
 
 @section('title', 'Music - Our Memories')
 
+@push('head')
+<!-- Spotify Web Playback SDK -->
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+@endpush
+
 @push('styles')
 <style>
     .music-container {
@@ -44,6 +49,12 @@
         background: rgba(239, 68, 68, 0.1);
         color: #991b1b;
         border-color: rgba(239, 68, 68, 0.3);
+    }
+    
+    .alert-info {
+        background: rgba(59, 130, 246, 0.1);
+        color: #1e40af;
+        border-color: rgba(59, 130, 246, 0.3);
     }
     
     .music-header {
@@ -509,6 +520,33 @@
 
     .btn-memory:hover {
         background: rgba(140, 224, 255, 0.2);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .btn-play {
+        background: var(--color-primary);
+        color: white;
+        border-color: var(--color-primary);
+        cursor: pointer;
+    }
+
+    .btn-play:hover {
+        background: #6bd4ff;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .btn-preview {
+        background: rgba(156, 163, 175, 0.1);
+        color: #6b7280;
+        border-color: rgba(156, 163, 175, 0.3);
+        cursor: pointer;
+    }
+
+    .btn-preview:hover {
+        background: rgba(156, 163, 175, 0.2);
+        color: #4b5563;
         transform: translateY(-1px);
         box-shadow: var(--shadow-sm);
     }
@@ -1239,7 +1277,7 @@
     @if(count($recommendedTracks) > 0)
         <div class="tracks-grid">
             @foreach($recommendedTracks as $track)
-                <div class="track-card" onclick="playSpotifyTrack('{{ $track['id'] }}', '{{ $track['name'] }}', '{{ $track['artist'] }}')">
+                <div class="track-card" onclick="playSpotifyTrack('{{ $track['id'] }}', '{{ $track['name'] }}', '{{ $track['artist'] }}', null, '{{ $track['preview_url'] ?? '' }}')">
                     <img src="{{ $track['image'] ?? 'https://via.placeholder.com/300x300?text=No+Image' }}" 
                          alt="{{ $track['name'] }}" 
                          class="track-image">
@@ -1250,9 +1288,16 @@
                         
                         <div class="track-actions">
                             @if($hasSpotifyConnection)
-                                <button class="track-btn btn-play" onclick="playSpotifyTrack('{{ $track['id'] }}', '{{ $track['name'] }}', '{{ $track['artist'] }}', event)">
+                                <button class="track-btn btn-play" onclick="playSpotifyTrack('{{ $track['id'] }}', '{{ $track['name'] }}', '{{ $track['artist'] }}', event, '{{ $track['preview_url'] ?? '' }}')">
                                     <span>▶️</span>
                                     <span>Play Now</span>
+                                </button>
+                            @endif
+                            
+                            @if($track['preview_url'])
+                                <button class="track-btn btn-preview" onclick="playPreviewAudio('{{ $track['preview_url'] }}', '{{ $track['name'] }}', '{{ $track['artist'] }}'); event.stopPropagation()">
+                                    <span>🎧</span>
+                                    <span>Preview</span>
                                 </button>
                             @endif
                             
@@ -1416,7 +1461,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         searchGrid.innerHTML = tracks.map(track => `
-            <div class="track-card" onclick="playSpotifyTrack('${track.id}', '${track.name}', '${track.artist}')">
+            <div class="track-card" onclick="playSpotifyTrack('${track.id}', '${track.name}', '${track.artist}', null, '${track.preview_url || ''}')">
                 <img src="${track.image || 'https://via.placeholder.com/300x300?text=No+Image'}" 
                      alt="${track.name}" 
                      class="track-image">
@@ -1426,13 +1471,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="track-album">${track.album}</div>
                     
                     <div class="track-actions">
+                        <button class="track-btn btn-play" onclick="playSpotifyTrack('${track.id}', '${track.name}', '${track.artist}', event, '${track.preview_url || ''}')">
+                            <span>▶️</span>
+                            <span>Play</span>
+                        </button>
+                        ${track.preview_url ? `
+                            <button class="track-btn btn-preview" onclick="playPreviewAudio('${track.preview_url}', '${track.name}', '${track.artist}'); event.stopPropagation()">
+                                <span>🎧</span>
+                                <span>Preview</span>
+                            </button>
+                        ` : ''}
                         ${track.external_url ? `
                             <a href="${track.external_url}" 
                                target="_blank" 
                                class="track-btn btn-spotify"
                                onclick="event.stopPropagation()">
                                 <span>🎵</span>
-                                <span>Play on Spotify</span>
+                                <span>Open in Spotify</span>
                             </a>
                         ` : ''}
                     </div>
@@ -1489,7 +1544,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    window.playSpotifyTrack = function(trackId, trackName, artistName) {
+    window.playSpotifyTrack = function(trackId, trackName, artistName, event, previewUrl = null) {
         // Update UI immediately
         document.getElementById('currentTrack').textContent = trackName;
         document.getElementById('currentArtist').textContent = artistName;
@@ -1515,14 +1570,89 @@ document.addEventListener('DOMContentLoaded', function() {
                 startProgressAnimation();
                 updateCurrentPlayback();
             } else {
-                showNotification('❌ Failed to play track. Make sure Spotify is open.', 'error');
+                handlePlaybackError(data, trackName, artistName, previewUrl);
             }
         })
         .catch(error => {
             console.error('Playback failed:', error);
             showNotification('❌ Failed to start playback', 'error');
+            // Try preview URL as fallback
+            if (previewUrl) {
+                playPreviewAudio(previewUrl, trackName, artistName);
+            }
         });
     };
+    
+    function handlePlaybackError(data, trackName, artistName, previewUrl) {
+        const errorCode = data.error_code;
+        let message = data.error || 'Failed to play track';
+        let showPreviewOption = false;
+        
+        switch(errorCode) {
+            case 'NO_ACTIVE_DEVICE':
+                message = '📱 No active Spotify device found. Please open Spotify on any device first.';
+                showPreviewOption = true;
+                break;
+            case 'PREMIUM_REQUIRED':
+                message = '💎 Spotify Premium is required for playback control.';
+                showPreviewOption = true;
+                break;
+            case 'DEVICE_NOT_FOUND':
+                message = '🔍 Spotify device not found. Please ensure Spotify is running.';
+                showPreviewOption = true;
+                break;
+            default:
+                message = '❌ ' + message;
+                showPreviewOption = true;
+        }
+        
+        showNotification(message, 'error');
+        
+        // Auto-fallback to preview if available
+        if (showPreviewOption && previewUrl) {
+            setTimeout(() => {
+                showNotification('🎧 Playing 30-second preview instead...', 'info');
+                playPreviewAudio(previewUrl, trackName, artistName);
+            }, 2000);
+        }
+    }
+    
+    function playPreviewAudio(previewUrl, trackName, artistName) {
+        // Stop any currently playing preview
+        if (window.currentPreviewAudio) {
+            window.currentPreviewAudio.pause();
+            window.currentPreviewAudio = null;
+        }
+        
+        if (!previewUrl) {
+            showNotification('❌ No preview available for this track', 'error');
+            return;
+        }
+        
+        const audio = new Audio(previewUrl);
+        window.currentPreviewAudio = audio;
+        
+        audio.play().then(() => {
+            showNotification(`🎧 Playing preview: ${trackName}`, 'success');
+            isPlaying = true;
+            playBtn.innerHTML = '⏸️';
+            
+            // Update UI
+            document.getElementById('currentTrack').textContent = trackName + ' (Preview)';
+            document.getElementById('currentArtist').textContent = artistName;
+            
+            // Handle audio end
+            audio.addEventListener('ended', () => {
+                isPlaying = false;
+                playBtn.innerHTML = '▶️';
+                showNotification('🎧 Preview ended', 'info');
+            });
+            
+        }).catch(error => {
+            console.error('Preview playback failed:', error);
+            showNotification('❌ Failed to play preview', 'error');
+        });
+    }
 
     window.closePlaylistModal = function() {
         document.getElementById('playlistModal').style.display = 'none';
@@ -1542,10 +1672,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="track-album">${track.album}</div>
                     
                     <div class="track-actions">
-                        <button class="track-btn btn-play" onclick="playSpotifyTrack('${track.id}', '${track.name}', '${track.artist}', event)">
+                        <button class="track-btn btn-play" onclick="playSpotifyTrack('${track.id}', '${track.name}', '${track.artist}', event, '${track.preview_url || ''}')">
                             <span>▶️</span>
                             <span>Play</span>
                         </button>
+                        ${track.preview_url ? `
+                            <button class="track-btn btn-preview" onclick="playPreviewAudio('${track.preview_url}', '${track.name}', '${track.artist}'); event.stopPropagation()">
+                                <span>🎧</span>
+                                <span>Preview</span>
+                            </button>
+                        ` : ''}
                         ${track.external_url ? `
                             <a href="${track.external_url}" 
                                target="_blank" 
@@ -1598,7 +1734,7 @@ document.addEventListener('DOMContentLoaded', function() {
             position: 'fixed',
             top: '20px',
             right: '20px',
-            background: type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6',
+            background: type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'info' ? '#3b82f6' : '#6b7280',
             color: 'white',
             padding: '12px 20px',
             borderRadius: '8px',
@@ -1659,5 +1795,186 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCurrentPlayback(); // Initial update
     }
 });
+
+// Spotify Web Playback SDK Implementation
+let spotifyPlayer = null;
+let spotifyDeviceId = null;
+
+// Check if Spotify SDK is loaded
+console.log('Checking Spotify SDK availability...');
+console.log('window.Spotify:', typeof window.Spotify);
+console.log('window.onSpotifyWebPlaybackSDKReady defined:', typeof window.onSpotifyWebPlaybackSDKReady);
+
+window.onSpotifyWebPlaybackSDKReady = () => {
+    console.log('Spotify Web Playback SDK Ready!');
+    const token = '{{ $spotifyAccessToken ?? "" }}';
+    
+    console.log('Spotify token available:', token ? 'Yes' : 'No');
+    console.log('Has Spotify connection:', {{ $hasSpotifyConnection ? 'true' : 'false' }});
+    console.log('Spotify access token from controller:', token ? token.substring(0, 20) + '...' : 'null');
+    
+    if (!token) {
+        console.log('No Spotify access token available - using mock mode');
+        showNotification('ℹ️ Connect to Spotify for full playback control', 'info');
+        return;
+    }
+    
+    spotifyPlayer = new Spotify.Player({
+        name: 'Khairun Web Player',
+        getOAuthToken: cb => { cb(token); },
+        volume: 0.5
+    });
+    
+    // Error handling
+    spotifyPlayer.addListener('initialization_error', ({ message }) => {
+        console.error('Spotify Player initialization error:', message);
+    });
+    
+    spotifyPlayer.addListener('authentication_error', ({ message }) => {
+        console.error('Spotify Player authentication error:', message);
+        showNotification('❌ Spotify authentication failed. Please reconnect.', 'error');
+    });
+    
+    spotifyPlayer.addListener('account_error', ({ message }) => {
+        console.error('Spotify Player account error:', message);
+        showNotification('💎 Spotify Premium is required for playback control.', 'error');
+    });
+    
+    spotifyPlayer.addListener('playback_error', ({ message }) => {
+        console.error('Spotify Player playback error:', message);
+        showNotification('❌ Playback error: ' + message, 'error');
+    });
+    
+    // Playback status updates
+    spotifyPlayer.addListener('player_state_changed', (state) => {
+        if (!state) return;
+        
+        const track = state.track_window.current_track;
+        if (track) {
+            document.getElementById('currentTrack').textContent = track.name;
+            document.getElementById('currentArtist').textContent = track.artists[0].name;
+            
+            // Update play/pause button
+            isPlaying = !state.paused;
+            playBtn.innerHTML = isPlaying ? '⏸️' : '▶️';
+            
+            // Update progress
+            const progressPercent = (state.position / state.duration) * 100;
+            progressFill.style.width = progressPercent + '%';
+            updateTimeDisplay(progressPercent);
+            
+            if (isPlaying) {
+                startProgressAnimation();
+            }
+        }
+    });
+    
+    // Ready
+    spotifyPlayer.addListener('ready', ({ device_id }) => {
+        console.log('Spotify Web Player ready with Device ID:', device_id);
+        spotifyDeviceId = device_id;
+        showNotification('🎵 Khairun Web Player is ready!', 'success');
+        
+        // Transfer playback to this device
+        transferPlaybackToWebPlayer(device_id);
+    });
+    
+    // Not Ready
+    spotifyPlayer.addListener('not_ready', ({ device_id }) => {
+        console.log('Spotify Web Player not ready with Device ID:', device_id);
+    });
+    
+    // Connect to the player!
+    console.log('Attempting to connect to Spotify Web Player...');
+    spotifyPlayer.connect().then(success => {
+        if (success) {
+            console.log('Successfully connected to Spotify Web Player');
+            showNotification('🔗 Connected to Spotify Web Player', 'success');
+        } else {
+            console.error('Failed to connect to Spotify Web Player');
+            showNotification('❌ Failed to connect to Spotify Web Player', 'error');
+        }
+    }).catch(error => {
+        console.error('Spotify Web Player connection error:', error);
+        showNotification('❌ Spotify connection error: ' + error.message, 'error');
+    });
+};
+
+// Transfer playback to web player
+function transferPlaybackToWebPlayer(deviceId) {
+    fetch('{{ route('music.transfer-playback') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            device_id: deviceId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Playback transferred to web player');
+        } else {
+            console.log('Failed to transfer playback:', data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Transfer playback failed:', error);
+    });
+}
+
+// Enhanced playSpotifyTrack function with device ID
+const originalPlaySpotifyTrack = window.playSpotifyTrack;
+window.playSpotifyTrack = function(trackId, trackName, artistName, event, previewUrl = null) {
+    // If we have a web player device, use it
+    if (spotifyDeviceId) {
+        const spotifyUri = `spotify:track:${trackId}`;
+        
+        fetch('{{ route('music.play') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                track_uri: spotifyUri,
+                device_id: spotifyDeviceId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('🎵 Playing on Khairun Web Player!', 'success');
+                // Player state will be updated via player_state_changed listener
+            } else {
+                handlePlaybackError(data, trackName, artistName, previewUrl);
+            }
+        })
+        .catch(error => {
+            console.error('Playback failed:', error);
+            showNotification('❌ Failed to start playback', 'error');
+            if (previewUrl) {
+                playPreviewAudio(previewUrl, trackName, artistName);
+            }
+        });
+    } else {
+        // Fallback to original function
+        originalPlaySpotifyTrack(trackId, trackName, artistName, event, previewUrl);
+    }
+};
+
+// Fallback: Check if SDK is ready after 3 seconds
+setTimeout(() => {
+    if (typeof window.Spotify !== 'undefined' && !spotifyPlayer) {
+        console.log('Spotify SDK loaded but callback not triggered, manually initializing...');
+        window.onSpotifyWebPlaybackSDKReady();
+    } else if (typeof window.Spotify === 'undefined') {
+        console.log('Spotify SDK not loaded after 3 seconds');
+        showNotification('⚠️ Spotify SDK loading issue. Please refresh the page.', 'error');
+    }
+}, 3000);
+
 </script>
 @endpush
